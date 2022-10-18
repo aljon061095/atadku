@@ -1,0 +1,28 @@
+.active-nav  {
+    background: #2f4cdd !important;
+    color: #f4f6fd !important;
+}
+
+.active-nav > .mdi { 
+  color: #f4f6fd !important;
+}
+
+.feedback {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  color: #fff;
+  background: rgba(90, 92, 105, 0.5);
+  line-height: 46px;
+}
+
+.unavailable-menu {
+  background-color: #fff !important;
+  opacity: 50% !important;
+}
+
+
+  
