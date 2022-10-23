@@ -67,22 +67,7 @@
                      <div class="col-sm-12 col-md-7">
                         <!--Google map-->
                         <div class="mb-4">
-                           <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7702.87967015572!2d120.58468653488768!3d15.134170799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1665913019472!5m2!1sen!2sph" width="700" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </div>
-                        <!--Buttons-->
-                        <div class="row text-center">
-                           <div class="col-md-4">
-                              <a class="bg-primary px-3 py-2 rounded text-white mb-2 d-inline-block"><i class="mdi mdi-home-outline"></i></a>
-                              <p> Your Address ….. </p>
-                           </div>
-                           <div class="col-md-4">
-                              <a class="bg-primary px-3 py-2 rounded text-white mb-2 d-inline-block"><i class="mdi mdi-cellphone"></i></a>
-                              <p>+91- 90000000</p>
-                           </div>
-                           <div class="col-md-4">
-                              <a class="bg-primary px-3 py-2 rounded text-white mb-2 d-inline-block"><i class="mdi mdi-email"></i></a>
-                              <p> your@gmail.com</p>
-                           </div>
+                           <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7702.87967015572!2d120.58468653488768!3d15.134170799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1665913019472!5m2!1sen!2sph" width="700" height="580" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                      </div>
                   </div>

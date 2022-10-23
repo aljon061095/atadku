@@ -39,7 +39,7 @@
                                     <div class="card-footer">
                                         <div class="text-center">
                                             <span class="price">
-                                                <a href="item_display.php?id=<?php echo $store['id']; ?>" class="btn btn-primary">View Menu</a>
+                                                <a href="item_display.php?id=<?php echo $store['id']; ?>" class="btn btn-primary">View Products</a>
                                             </span>
                                         </div>
                                     </div>

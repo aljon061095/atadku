@@ -118,10 +118,9 @@ if (isset($_POST['update_food'])) {
                                     <table id="example" class="display" style="min-width: 845px">
                                         <thead>
                                             <tr>
-                                                <th>Restaurant</th>
                                                 <th>Food Name</th>
                                                 <th>Price</th>
-                                                <th>Image</th>
+                                                <th class="text-center">Image</th>
                                                 <th>Description</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
@@ -132,15 +131,6 @@ if (isset($_POST['update_food'])) {
                                                 $image = $food['images'];
                                             ?>
                                                 <tr>
-                                                    <td>
-                                                        <?php
-                                                        $restaurant_id = $food['restaurant_id'];
-                                                        $result = mysqli_query($link, "SELECT *
-                                                                FROM restaurant WHERE id = $restaurant_id");
-                                                        $row = mysqli_fetch_array($result);
-                                                        ?>
-                                                        <?php echo $row['name']; ?>
-                                                    </td>
                                                     <td><?php echo $food['food_name']; ?></td>
                                                     <td><?php echo number_format((float)$food['price'], 2, '.', ''); ?></td>
                                                     <td><img class="img-fluid" src=<?php echo "../uploads/$image" ?> alt=""></td>

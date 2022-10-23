@@ -19,7 +19,7 @@
         if (array_key_exists('logo', $_FILES)) {
             if ($_FILES['logo']['tmp_name'] != '') {
                 $filename = strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['logo']['name']);
-                $move = move_uploaded_file($_FILES['logo']['tmp_name'], '../uploads/restaurant' . $filename);
+                $move = move_uploaded_file($_FILES['logo']['tmp_name'], '../uploads' . $filename);
 
                 if ($move) {
                     $logo = $filename;
@@ -95,18 +95,21 @@
                                                 <th>TIN</th>
                                                 <th>Address</th>
                                                 <th>Status</th>
-                                                <th></th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($restaurants as $restaurant) { ?>
+                                            <?php foreach($restaurants as $restaurant) { 
+                                                 $logo = $restaurant['logo'];
+                                                ?>
                                                 <tr>
                                                     <td><?php echo $restaurant['name']; ?></td>
-                                                    <td><img class="img-fluid" src="../images/logo.png" alt="" width="50"></td>
+                                                    <td><img class="img-fluid" src=<?php echo "../uploads/$logo"?> alt=""></td>
                                                     <td><?php echo $restaurant['owner_name']; ?></td>
                                                     <td><?php echo $restaurant['tin']; ?></td>
                                                     <td><?php echo $restaurant['address']; ?></td>
-                                                    <td><span class="badge light badge-success">
+                                                    <td>
+                                                        <span class="badge light badge-success">
                                                             <i class="fa fa-circle text-success mr-1"></i>
                                                             active
                                                         </span>

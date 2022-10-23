@@ -27,7 +27,7 @@
         <?php include 'includes/sidebar.php'?>
 
         <div class="content-body">
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-left: -5px; padding-top: 3rem !important;">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">

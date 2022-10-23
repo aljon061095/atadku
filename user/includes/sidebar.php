@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="pickup.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/pickup.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+                    <a href="pickup_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/pickup_list.php' || $_SERVER['PHP_SELF'] == '/atadku/user/pickup.php') { ?>active-nav <?php } ?>" aria-expanded="false">
                         <i class="mdi mdi-navigation"></i>
                         <span class="nav-text">Pickup</span>
                     </a>
@@ -45,6 +45,12 @@
                     <a href="order_driver.php" class="ai-icon" aria-expanded="false">
                         <i class="mdi mdi-cart-plus"></i>
                         <span class="nav-text">Delivery List</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="driver_pickup_list.php" class="ai-icon" aria-expanded="false">
+                        <i class="mdi mdi-navigation"></i>
+                        <span class="nav-text">Pickup List</span>
                     </a>
                 </li>
                 <li>
@@ -83,12 +89,6 @@
                             <span class="nav-text">Sales Report</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="profile.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/profile.php') { ?>active-nav <?php } ?>" aria-expanded="false">
-                            <i class="mdi mdi-face-profile"></i>
-                            <span class="nav-text">Profile</span>
-                        </a>
-                    </li>
                 <?php  } ?>
                 <?php if (isset($_SESSION["type"]) && $_SESSION["type"] === "store") { ?>
                     <li>
@@ -113,12 +113,6 @@
                         <a href="reports.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/reports.php') { ?>active-nav <?php } ?>" aria-expanded="false">
                             <i class="mdi mdi-chart-bar-stacked"></i>
                             <span class="nav-text">Sales Report</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="profile.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/profile.php') { ?>active-nav <?php } ?>" aria-expanded="false">
-                            <i class="mdi mdi-face-profile"></i>
-                            <span class="nav-text">Profile</span>
                         </a>
                     </li>
                 <?php  } ?>

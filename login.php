@@ -2,19 +2,19 @@
     // Initialize the session
     session_start();
     
-    //Check if the user is already logged in, if yes then redirect him to welcome page
+    //Check if the user is already logged in, if yes then redirect him to customer page
     if (isset($_SESSION["user"]) && $_SESSION["user"] === "customer"){
         header("location: user/index.php");
         exit;
     }
 
-    //Check if the user is already logged in, if yes then redirect him to welcome page
+    //Check if the user is already logged in, if yes then redirect him to driver page
     if (isset($_SESSION["user"]) && $_SESSION["user"] === "driver"){
         header("location: user/dashboard.php");
         exit;
     }
 
-    //Check if the user is already logged in, if yes then redirect him to welcome page
+    //Check if the user is already logged in, if yes then redirect him to owner page
     if (isset($_SESSION["user"]) && $_SESSION["user"] === "owner"){
         header("location: user/dashboard.php");
         exit;

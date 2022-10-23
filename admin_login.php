@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <a href="admin/dashboard.php" class="btn btn-primary">Login as Admin</a>
+                                        <a href="admin/dashboard.php" class="btn btn-primary btn-block">Login as Admin</a>
                                     </div>
                                 </form>
                                 <div class="new-account mt-3 text-center">

@@ -2,7 +2,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Atad-Ku-Food-Delivery-System</title>
+    <title>Atad-Ku-Bicycle-Delivery-System</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png">
     <link href="../vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
@@ -15,8 +15,8 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/menu.css" rel="stylesheet">
     <link href="../css/checkout.css" rel="stylesheet">
-    <link href="../css/new_style.css" rel="stylesheet">
-    <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/main_styles.css" rel="stylesheet">
+    <link href="../css/timeline.css" rel="stylesheet">
     
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

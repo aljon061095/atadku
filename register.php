@@ -16,7 +16,7 @@ if (isset($_POST['register_customer'])) {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $id_type = $_POST['id_type'];
-    $valid_id = $_POST['valid_id'];
+    $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['full_name'];;
     $status = 1;
 
     if (array_key_exists('profile', $_FILES)) {
@@ -30,8 +30,8 @@ if (isset($_POST['register_customer'])) {
         }
     }
 
-    $query = "INSERT INTO customer(profile, full_name, address, number, email_address, username, password, status)
-            VALUES ('$profile', '$full_name', '$address', '$number', '$email_address', '$username', '$password', '$status')";
+    $query = "INSERT INTO customer(profile, full_name, address, number, email_address, username, password, id_type, valid_id status)
+            VALUES ('$profile', '$full_name', '$address', '$number', '$email_address', '$username', '$password', '$id_type', '$valid_id',  '$status')";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {
@@ -97,11 +97,10 @@ if (isset($_POST['register_driver'])) {
     $address = $_POST['address'];
     $email = $_POST['email_address'];
     $number = $_POST['number'];
-    $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['full_name'];
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $id_type = $_POST['id_type'];
-    $valid_id = $_POST['valid_id'];
+    $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['full_name'];
     $status = 1;
 
     if (array_key_exists('profile', $_FILES)) {
@@ -126,8 +125,8 @@ if (isset($_POST['register_driver'])) {
         }
     }
 
-    $query = "INSERT INTO driver(profile, full_name, address, valid_id, number, email_address, username, password, status)
-            VALUES ('$profile', '$full_name', '$address', '$valid_id', '$number', '$email', '$username', '$password', '$status')";
+    $query = "INSERT INTO driver(profile, full_name, address, number, email_address, username, password, valid_id, id_type, status)
+            VALUES ('$profile', '$full_name', '$address', '$number', '$email', '$username', '$password', '$valid_id', '$id_type', '$status')";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {

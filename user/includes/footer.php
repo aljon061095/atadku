@@ -47,6 +47,6 @@
 
 <footer class="footer">
     <div class="container">
-        <span class="text-muted content">Copyright (c) 2022 <a href="admin_login.php">Atad Ku! Bike Delivery</a>. All rights reserved</span>
+        <span class="text-muted content">Copyright (c) 2022 <a href="/../atadku/admin_login.php">Atad Ku! Bike Delivery</a>. All rights reserved</span>
     </div>
 </footer>

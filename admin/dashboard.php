@@ -8,6 +8,14 @@
 	$food_sql = "SELECT * FROM food_list WHERE status = 1";
 	$food_result = mysqli_query($link, $food_sql);
 	$food_list = $food_result->fetch_all(MYSQLI_ASSOC);
+	
+	$store_sql = "SELECT * FROM store WHERE status = 1";
+	$store_result = mysqli_query($link, $store_sql);
+	$store = $store_result->fetch_all(MYSQLI_ASSOC);
+
+	$item_sql = "SELECT * FROM item_list WHERE status = 1";
+	$item_result = mysqli_query($link, $item_sql);
+	$item_list = $item_result->fetch_all(MYSQLI_ASSOC);
 
 	$driver_sql = "SELECT * FROM driver WHERE status = 1";
 	$driver_result = mysqli_query($link, $driver_sql);
@@ -78,6 +86,36 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-xl-6 col-xxl-6 col-lg-6 col-md-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body p-4">
+								<div class="media ai-icon">
+									<span class="mr-3 bgl-primary text-primary">
+									<i class="mdi mdi-home"></i>
+									</span>
+									<div class="media-body">
+										<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($store); ?></span></h3>
+										<p class="mb-0">Number of Stores</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6 col-xxl-6 col-lg-6 col-md-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body p-4">
+								<div class="media ai-icon">
+									<span class="mr-3 bgl-primary text-primary">
+									<i class="mdi mdi-gift"></i>
+                                </span>
+									<div class="media-body">
+										<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($item_list); ?></span></h3>
+										<p class="mb-0">Number of Items</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="col-xl-6 col-xxl-6 col-lg-6 col-md-6 col-sm-6 ">
 						<div class="widget-stat card">
 							<div class="card-body p-4">
@@ -98,7 +136,7 @@
 							<div class="card-body p-4">
 								<div class="media ai-icon">
 									<span class="mr-3 bgl-primary text-primary">
-									<i class="mdi mdi-coin"></i>
+									<i class="mdi mdi-comment-text-multiple-outline"></i>
                                     </span>
 									<div class="media-body">
 										<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($feedback); ?></span></h3>

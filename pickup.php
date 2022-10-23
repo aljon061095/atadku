@@ -49,7 +49,7 @@ require_once "includes/config.php";
                                             </div>
                                             <div class="form-group">
                                                 <div class="form-floating">
-                                                    <select class="form-select" style="padding: 0.9rem;" id="item_details" name="item_details" required>
+                                                    <select class="form-select" style="padding: 0.9rem !important; width: 100% !important;" id="item_details" name="item_details" required>
                                                         <option selected value="">Type of Item</option>
                                                         <option value="document">Document</option>
                                                         <option value="food">Food</option>
@@ -95,6 +95,14 @@ require_once "includes/config.php";
                                                     <textarea name="posts" id="textarea" cols="40" rows="5" class="form-control bg-transparent" placeholder="Please write anything you want to post here..."></textarea>
                                                     <label for="sender_address">Add simple greeting for recipients (optional)</label>
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row text-center">
+                                            <p>You must login or register to use pickup services.</p>
+                                            <div class="col-md-12">
+                                                <a href="login.php" class="btn btn-primary">Login</a>
+                                                <a href="register.php" class="btn btn-success">Register</a>
                                             </div>
                                         </div>
                                     </div>

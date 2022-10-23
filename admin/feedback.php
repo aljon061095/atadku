@@ -56,7 +56,7 @@
                                                 <tr>
                                                     <td><?php echo $feedback['title']; ?></td>
                                                     <td><?php echo $feedback['description']; ?></td>
-                                                    <td><?php echo $feedback['date_submitted']; ?></td>
+                                                    <td><?php echo date('m-d-Y', strtotime($feedback['date_submitted'])); ?></td>
                                                     <td><?php echo $feedback['submitted_by']; ?></td>
                                                     <td>
                                                         <span class="badge light badge-info">

@@ -7,20 +7,20 @@
 
     //adding driver
     if (isset($_POST['save_driver'])) {
-        $profile = strtotime(date('y-m-d H:i')) . '_' . $_POST['name'];
+        $profile = strtotime(date('y-m-d H:i')) . '_' . $_POST['full_name'];
         $full_name = $_POST['full_name'];
         $address = $_POST['address'];
         $email = $_POST['email'];
         $number = $_POST['number'];
-        $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['name'];
+        $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['full_name'];
         $username = $_POST['username'];
-        $password = $_POST['password'];
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $status = 1;
 
         if (array_key_exists('profile', $_FILES)) {
             if ($_FILES['profile']['tmp_name'] != '') {
                 $filename = strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['profile']['name']);
-                $move = move_uploaded_file($_FILES['profile']['tmp_name'], '../uploads/driver' . $filename);
+                $move = move_uploaded_file($_FILES['profile']['tmp_name'], '../uploads' . $filename);
 
                 if ($move) {
                     $profile = $filename;
@@ -31,7 +31,7 @@
         if (array_key_exists('valid_id', $_FILES)) {
             if ($_FILES['valid_id']['tmp_name'] != '') {
                 $filename = strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['valid_id']['name']);
-                $move = move_uploaded_file($_FILES['valid_id']['tmp_name'], '../uploads/driver' . $filename);
+                $move = move_uploaded_file($_FILES['valid_id']['tmp_name'], '../uploads' . $filename);
 
                 if ($move) {
                     $valid_id = $filename;
@@ -112,9 +112,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach($drivers as $driver) { ?>
+                                            <?php foreach($drivers as $driver) {
+                                                    $image = $driver['profile'];
+                                                ?>
                                                 <tr>
-                                                    <td><img class="img-fluid" src="../images/avatar/1.jpg" alt="" width="50"></td>
+                                                    <td><img class="img-fluid" src=<?php echo "../uploads/$image" ?> alt="" width="50"></td>
                                                     <td><?php echo $driver['full_name']; ?></td>
                                                     <td><?php echo $driver['address']; ?></td>
                                                     <td><?php echo $driver['email_address']; ?></td>

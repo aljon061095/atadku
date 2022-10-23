@@ -6,7 +6,7 @@ $post_sql = "SELECT * FROM posts";
 $result = mysqli_query($link, $post_sql);
 $posts = $result->fetch_all(MYSQLI_ASSOC);
 
-$feedback_sql = "SELECT * FROM feedbacks";
+$feedback_sql = "SELECT * FROM feedback";
 $feedback_result = mysqli_query($link, $feedback_sql);
 $feedbacks = $feedback_result->fetch_all(MYSQLI_ASSOC);
 
