@@ -59,6 +59,13 @@ $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-cart-plus"></i> Pickup Info</h4>
+                            <div>
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                    <input type="hidden" name="pickup_id" value="<?php echo $pickup_id; ?>" />
+                                    <button type="submit" name="delivered" class="btn btn-success">Delivered</button>
+                                    <button type="submit" name="reject" class="btn btn-danger">Reject</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -133,13 +140,7 @@ $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
                                         </div>
                                     </div>
                                 </div>
-                                <div class="float-right">
-                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                        <input type="hidden" name="pickup_id" value="<?php echo $pickup_id; ?>" />
-                                        <button type="submit" name="delivered" class="btn btn-success">Delivered</button>
-                                        <button type="submit" name="reject" class="btn btn-danger">Reject</button>
-                                    </form>
-                                </div>
+                                
 
                             </div>
                         </div>
@@ -149,7 +150,7 @@ $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 
-
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
 
     <script>

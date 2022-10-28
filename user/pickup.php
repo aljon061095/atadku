@@ -39,6 +39,13 @@ if (isset($_POST['pickup_save'])) {
             VALUES ('$pickup_id', '$description')";
         $query_status_run = mysqli_query($link, $query_status);
 
+        if ($query_status_run) {
+            $notification = "There was an item for pickup from $sender_name that needs your approval.";
+            $notification_query = "INSERT INTO notifications(user_id, url_id, notification)
+                VALUES ('$customer_id', '$customer_id', '$notification')";
+            mysqli_query($link, $notification_query);
+        }
+
         $_SESSION['success_status'] = "You have successfully added $pickup_code item for pickup.";
         header("location: pickup_list.php");
     }

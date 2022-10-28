@@ -11,6 +11,11 @@ $orders_sql = "SELECT * FROM food_orders WHERE restaurant_id = $restaurant_id &&
 $result = mysqli_query($link, $orders_sql);
 $order = $result->fetch_array(MYSQLI_ASSOC);
 
+$driver_id = $order['driver_id'];
+$driver_result = mysqli_query($link, "SELECT *
+            FROM driver WHERE id = $driver_id");
+$driver = mysqli_fetch_array($driver_result);
+
 if (isset($_POST['ready_for_delivery'])) {
     $id = $_POST['order_id'];
 
@@ -43,7 +48,7 @@ if (isset($_POST['ready_for_delivery'])) {
         <?php include 'includes/topbar.php' ?>
         <?php include 'includes/sidebar.php' ?>
 
-        <div class="content-body" style="margin-left: -5px; padding-top: 5rem;">
+        <div class="content-body" style="margin-left: -5px; padding-top: 7rem;">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
@@ -51,8 +56,8 @@ if (isset($_POST['ready_for_delivery'])) {
                             <h4><i class="mdi mdi-cart-plus"></i> Order Info</h4>
                             <div class="pull-right">
                                 <form action="order_info.php?order_id=<?php echo $order_id; ?>" method="POST">
-                                    <input type="text" name="order_id" value="<?php echo $order["id"]; ?>" />
-                                    <button type="submit" name="ready_for_delivery" class="btn btn-success">Ready for Delivery</button>
+                                    <input type="hidden" name="order_id" value="<?php echo $order["id"]; ?>" />
+                                    <button type="submit" name="ready_for_delivery" class="btn btn-success <?php echo !empty($driver) ? "" : "disabled" ?>">Ready for Delivery</button>
                                     <button type="submit" name="reject" class="btn btn-danger">Reject</button>
                                 </form>
                             </div>
@@ -89,21 +94,15 @@ if (isset($_POST['ready_for_delivery'])) {
                                                 <label for="quantity">Quantity</label>
                                             </div>
                                         </div>
-                                        <?php
-                                        $driver_id = $order['driver_id'];;
-                                        $result = mysqli_query($link, "SELECT *
-                                                    FROM driver WHERE id = $driver_id");
-                                        $driver = mysqli_fetch_array($result);
-                                        ?>
                                         <div class="form-group">
                                             <div class="form-floating mb-2">
-                                                <input type="text" class="form-control" value="<?php echo $driver['full_name']; ?>" name="driver" id="driver" placeholder="Driver" readonly>
+                                                <input type="text" class="form-control" value="<?php echo !empty($driver) ? $driver['full_name'] : "No assigned driver yet."; ?>" name="driver" id="driver" placeholder="Driver" readonly>
                                                 <label for="driver">Driver</label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="form-floating mb-2">
-                                                <input type="text" class="form-control" value="<?php echo $driver['number']; ?>" placeholder="Driver's Contact Number" name="driver_contact" id="driver_contact" readonly>
+                                                <input type="text" class="form-control" value="<?php echo !empty($driver) ?  $driver['number'] : "No assigned driver yet."; ?>" placeholder="Driver's Contact Number" name="driver_contact" id="driver_contact" readonly>
                                                 <label for="driver_contact">Driver's Contact Number</label>
                                             </div>
                                         </div>
@@ -162,6 +161,7 @@ if (isset($_POST['ready_for_delivery'])) {
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
 
 </body>

@@ -71,7 +71,7 @@ $food_list = $result->fetch_all(MYSQLI_ASSOC);
                                                 <?php if ($food['status'] == 0) {  ?>
                                                     <a href="javascript:void(0);" class="btn btn-secondary disabled">Unavailable</a>
                                                 <?php } else { ?>
-                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#addtoCart" class="btn btn-success">Add to Cart</a>
+                                                    <button type="submit" name="add" class="btn btn-success">Add to Cart</button>
                                                 <?php }  ?>
                                             </span>
                                         </div>

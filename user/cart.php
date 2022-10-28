@@ -86,6 +86,7 @@
                             </thead>
                             <?php
                             $total = 0;
+                            $restaurant_id = 0;
                             foreach ($_SESSION["cart"] as $keys => $values) {
                                 ?>
                                     <tr>
@@ -96,6 +97,7 @@
                                         <td><a href="cart.php?action=delete&id=<?php echo $values["food_id"]; ?>"><span class="text-danger">Remove</span></a></td>
                                     </tr>
                                 <?php
+                                    $restaurant_id = $values["restaurant_id"];
                                     $total = $total + ($values["quantity"] * $values["price"]);
                                 }
                                 ?>
@@ -105,25 +107,25 @@
                                 <td></td>
                             </tr>
                         </table>
-                        <?php
-                            echo '<a href="cart.php?action=empty">
+                        <div>
+                            <a href="cart.php?action=empty">
                                 <button class="btn btn-danger">
                                     <span class="glyphicon glyphicon-trash"></span> 
                                     Empty Cart
                                 </button>
-                                </a>&nbsp;
-                                
-                                <a href="index.php">
-                                    <button class="btn btn-warning">Add more items</button>
-                                </a>&nbsp;
+                            </a>
 
-                                <a href="checkout.php">
-                                    <button class="btn btn-success pull-right">
-                                        <span class="glyphicon glyphicon-share-alt"></span> 
-                                        Check Out
-                                    </button>
-                                </a>';
-                        ?>
+                            <a href="menu.php?id=<?php echo $restaurant_id; ?>">
+                                <button class="btn btn-warning">Add more items</button>
+                            </a>
+
+                            <a href="checkout.php?restaurant_id=<?php echo $restaurant_id; ?>">
+                                <button class="btn btn-success pull-right">
+                                    <span class="glyphicon glyphicon-share-alt"></span> 
+                                    Check Out
+                                </button>
+                            </a>
+                        </div>
                     <?php
                     } elseif (empty($_SESSION["cart"])) {
                     ?>
@@ -140,6 +142,7 @@
         </div>
     </div>
     <?php include 'includes/footer.php' ?>
+    <?php include 'includes/feedbacks.php' ?>
 </body>
 
 </html>

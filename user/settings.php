@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,31 +12,14 @@
     <!-- Datatable -->
 <body>
 
-    <!--*******************
-        Preloader start
-    ********************-->
-    <div id="preloader">
-        <div class="sk-three-bounce">
-            <div class="sk-child sk-bounce1"></div>
-            <div class="sk-child sk-bounce2"></div>
-            <div class="sk-child sk-bounce3"></div>
-        </div>
-    </div>
-    <!--*******************
-        Preloader end
-    ********************-->
+    <?php include 'includes/preloader.php'?>
 
-    <!--**********************************
-        Main wrapper start
-    ***********************************-->
+
     <div id="main-wrapper">
 
         <?php include 'includes/topbar.php'?>
         <?php include 'includes/sidebar.php'?>
 
-        <!--**********************************
-            Content body start
-        ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
@@ -85,13 +72,8 @@
 				</div>
             </div>
         </div>
-        <!--**********************************
-            Content body end
-        ***********************************-->
+    
     </div>
-    <!--**********************************
-        Main wrapper end
-    ***********************************-->
 
     <?php include 'includes/footer.php'?>
 

@@ -3,6 +3,11 @@
     session_start();
 
     include "header.php";
+
+    $customer_id = $_SESSION["id"];;
+    $notification_sql = "SELECT * FROM notifications WHERE user_id = $customer_id";
+    $result = mysqli_query($link, $notification_sql);
+    $notifications = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <div class="nav-header">
@@ -82,9 +87,11 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
-                            <span class="badge badge-danger badge-counter">
-                                3
-                            <span>
+                            <?php if (count($notifications) != 0) { ?>
+                                <span class="badge badge-danger badge-counter">
+                                    <?php echo count($notifications); ?>
+                                <span>
+                            <?php  }?>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -104,16 +111,6 @@
                             <a class="dropdown-item text-center small text-gray-500" href="notifications.php">Show All Notifications</a>
                         </div>
                     </li>
-
-                    <!-- <li class="nav-item dropdown notification_dropdown">
-                        <a class="nav-link primary" href="index.php">Restaurant</a>
-                    </li>
-                    <li class="nav-item dropdown notification_dropdown">
-                        <a class="nav-link primary" href="#">About</a>
-                    </li>
-                    <li class="nav-item dropdown notification_dropdown">
-                        <a class="nav-link primary" href="contact.php">Contact</a>
-                    </li> -->
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <div class="header-info">

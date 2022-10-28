@@ -13,7 +13,7 @@
     <link href="../icons/material-design-iconic-font/css/materialdesignicons.min.css" rel="stylesheet">
 	<link href="../cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/new_style.css" rel="stylesheet">
+    <link href="../css/main_styles.css" rel="stylesheet">
     <link href="../css/styles.css" rel="stylesheet">
     <link href="../css/timeline.css" rel="stylesheet">
 </head>

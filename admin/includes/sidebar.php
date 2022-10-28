@@ -32,6 +32,12 @@
 				</a>
 			</li>
 			<li>
+				<a href="order_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/order_list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+					<i class="mdi mdi-navigation"></i>
+					<span class="nav-text">Order List</span>
+				</a>
+			</li>
+			<li>
 				<a href="food-list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/food-list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-food"></i>
 					<span class="nav-text">Food List</span>

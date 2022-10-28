@@ -5,8 +5,8 @@
     //Initialize the session
     session_start();
 
-    $driver_id = $_SESSION["id"];
-    $orders_sql = "SELECT * FROM food_orders WHERE driver_id = $driver_id";
+    $customer_id = $_SESSION["id"];
+    $orders_sql = "SELECT * FROM food_orders WHERE customer_id = $customer_id";
     $result = mysqli_query($link, $orders_sql);
     $orders = $result->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -58,7 +58,7 @@
                                             <?php foreach ($orders as $order) { ?>
                                                 <tr>
                                                     <td>
-                                                        <a href="order_driver_info.php?order_id=<?php echo $order['id']; ?>">
+                                                        <a href="order_customer_info.php?order_id=<?php echo $order['id']; ?>">
                                                             <?php echo $order['order_id']; ?>
                                                         </a>
                                                     </td>
@@ -74,7 +74,7 @@
                                                     <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
-                                                    <td><?php echo number_format($order['price'] + 49, 2); ?></td>
+                                                    <td><?php echo number_format($order['total'] + 49, 2); ?></td>
                                                     <td>
                                                         <?php if ($order['status'] == 2) { ?>
                                                             <span class="badge light badge-info">
@@ -107,6 +107,7 @@
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php'?>
 
 </body>

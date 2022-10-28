@@ -13,13 +13,36 @@ $order = $result->fetch_array(MYSQLI_ASSOC);
 
 if (isset($_POST['delivered'])) {
     $id = $_POST['order_id'];
+    $total_amount = $_POST['total_amount'];
+    $restaurant_id = $_POST['restaurant_id'];
+    $charge = $_POST['charge'];
+    $driver_id = $_POST['driver_id'];
 
     $query = "UPDATE `food_orders` SET `status` = 3 WHERE id = $id";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {
+        //update the pickup status -- delivered by the rider
+        $description = "Your order is now delivered. Thank you for choosing our delivery system! 
+        On the bottom right of the page, find the feedback icon then kindly give us feedback.";
+
+        $query_status = "INSERT INTO order_status(order_id, description)
+                    VALUES ('$order_id', '$description')";
+        mysqli_query($link, $query_status);
+
+
+        //add comission driver
+        $query_sales = "INSERT INTO commission(driver_id, commission)
+        VALUES ('$driver_id', '$charge')";
+            mysqli_query($link, $query_sales);
+
+        //add sales restaurant
+        $query_sales = "INSERT INTO sales(restaurant_id, sales)
+                    VALUES ('$restaurant_id', '$total_amount')";
+        mysqli_query($link, $query_sales);
+
         $_SESSION['success_status'] = "You have successfully updated the status of the delivery";
-        header("location: order_restaurant.php");
+        header("location: order_driver.php");
     }
 }
 ?>
@@ -43,16 +66,21 @@ if (isset($_POST['delivered'])) {
         <?php include 'includes/topbar.php' ?>
         <?php include 'includes/sidebar.php' ?>
 
-        <div class="content-body" style="margin-left: -5px; padding-top: 5rem;">
+        <div class="content-body" style="margin-left: -5px; padding-top: 7rem;">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-cart-plus"></i> Order Info</h4>
                             <div class="pull-right">
-                                <form action="order_info.php?order_id=<?php echo $order_id; ?>" method="POST">
+                                <form action="order_driver_info.php?order_id=<?php echo $order_id; ?>" method="POST">
                                     <input type="hidden" name="order_id" value="<?php echo $order["id"]; ?>" />
+                                    <input type="hidden" name="total_amount" value="<?php echo $order["total"]; ?>" />
+                                    <input type="hidden" name="restaurant_id" value="<?php echo $order["restaurant_id"]; ?>" />
+                                    <input type="hidden" name="charge" value="<?php echo $order["charge"]; ?>" />
+                                    <input type="hidden" name="driver_id" value="<?php echo $order["driver_id"]; ?>" />
                                     <button type="submit" name="delivered" class="btn btn-success">Delivered</button>
+                                    <button type="submit" name="reject" class="btn btn-danger">Reject</button>
                                 </form>
                             </div>
                         </div>
@@ -88,6 +116,18 @@ if (isset($_POST['delivered'])) {
                                                 <label for="quantity">Quantity</label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="form-floating mb-2">
+                                                <input type="number" class="form-control" value="<?php echo $order["total"]; ?>" name="quantity" id="quantity" placeholder="Quantity" readonly>
+                                                <label for="quantity">Total Amount</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-floating mb-2">
+                                                <input type="number" class="form-control" value="<?php echo $order["charge"]; ?>" name="charge" id="charge" placeholder="Delivery Charge" readonly>
+                                                <label for="charge">Delivery Charge</label>
+                                            </div>
+                                        </div>
                                         <?php
                                         $driver_id = $order['driver_id'];;
                                         $result = mysqli_query($link, "SELECT *
@@ -98,12 +138,6 @@ if (isset($_POST['delivered'])) {
                                             <div class="form-floating mb-2">
                                                 <input type="text" class="form-control" value="<?php echo $driver['full_name']; ?>" name="driver" id="driver" placeholder="Driver" readonly>
                                                 <label for="driver">Driver</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-floating mb-2">
-                                                <input type="text" class="form-control" value="<?php echo $driver['number']; ?>" placeholder="Driver's Contact Number" name="driver_contact" id="driver_contact" readonly>
-                                                <label for="driver_contact">Driver's Contact Number</label>
                                             </div>
                                         </div>
                                     </div>
@@ -151,6 +185,12 @@ if (isset($_POST['delivered'])) {
                                                 <label for="order_date">Order Date</label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="form-floating mb-2">
+                                                <input type="text" class="form-control" value="<?php echo $driver['number']; ?>" placeholder="Driver's Contact Number" name="driver_contact" id="driver_contact" readonly>
+                                                <label for="driver_contact">Driver's Contact Number</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -161,6 +201,7 @@ if (isset($_POST['delivered'])) {
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
 
 </body>

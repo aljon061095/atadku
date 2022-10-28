@@ -31,6 +31,7 @@
                         $total = 0;
                         $orderId = $_GET['order_id'];
                         $orderDate = date('Y-m-d');
+                        $restaurant_id = 0;
 
                         $customer_id = $_GET['customer_id'];
                         $result = mysqli_query($link, "SELECT *
@@ -39,6 +40,8 @@
 
                         if (isset($_SESSION["cart"])) {
                             foreach ($_SESSION["cart"] as $keys => $values) {
+                                $restaurant_id = $values["restaurant_id"];
+
                                 $order->restaurant_id = $values["restaurant_id"];
                                 $order->order_id = $orderId;
                                 $order->customer_id = $customer_id;
@@ -46,6 +49,7 @@
                                 $order->name = $values["name"];
                                 $order->price = $values["price"];
                                 $order->quantity = $values["quantity"];
+                                $order->total = $values["price"] * $values["quantity"];
                                 $order->payment_method = $delivery_info["payment_method"];
                                 $order->account_name = $delivery_info["account_name"];
                                 $order->account_number = $delivery_info["account_number"];
@@ -53,6 +57,26 @@
                                 $order->insert();
                             }
                             unset($_SESSION["cart"]);
+
+                            $description = "Your order is now on queue. The delivery rider will contact you soon. Thank you!";
+
+                            $query_status = "INSERT INTO order_status(order_id, description)
+                                        VALUES ('$orderId', '$description')";
+                            $query_status_run = mysqli_query($link, $query_status);
+
+                            $customer_name = $customer['name'];
+                            if ($query_status_run) {
+                                $notification = "You have pending orders from $customer_name. See order details. Thank you!";
+                                $notification_query = "INSERT INTO notifications(user_id, url_id, notification)
+                                    VALUES ('$customer_id', '$restaurant_id', '$notification')";
+                                mysqli_query($link, $notification_query);
+
+                                $customer_notification = "Your order is now on queue. The delivery rider will contact you soon. Thank you!";
+                                $customer_notification_query = "INSERT INTO notifications(user_id, url_id, notification)
+                                    VALUES ('$restaurant_id', '$customer_id', '$customer_notification')";
+                                mysqli_query($link, $customer_notification_query);
+                            }
+                           
                         }
                     ?>
                         <div class="container">
@@ -69,7 +93,7 @@
                             <a style="text-decoration: none;" href="index.php">
                                 <button class="btn btn-secondary">
                                     <i class="mdi mdi-arrow-left-bold"></i>
-                                    Go back to Restaurant
+                                    Go back to Homepage
                                 </button>
                             </a>
                         </div>  
@@ -80,6 +104,7 @@
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
     <?php include 'includes/scripts.php' ?>
 

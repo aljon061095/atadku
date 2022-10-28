@@ -14,7 +14,7 @@
 	<link href="../cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/menu.css" rel="stylesheet">
-    <link href="../css/checkout.css" rel="stylesheet">
+    <link href="../css/alerts.css" rel="stylesheet">
     <link href="../css/main_styles.css" rel="stylesheet">
     <link href="../css/timeline.css" rel="stylesheet">
     

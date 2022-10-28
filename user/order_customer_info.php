@@ -5,10 +5,10 @@ require_once "includes/config.php";
 //Initialize the session
 session_start();
 
-$pickup_id = $_GET["pickup_id"];
-$pickup_sql = "SELECT * FROM pickup_status WHERE pickup_id = $pickup_id";
-$result = mysqli_query($link, $pickup_sql);
-$pickup_infos = $result->fetch_all(MYSQLI_ASSOC);
+$order_id = $_GET["order_id"];
+$order_sql = "SELECT * FROM order_status WHERE order_id = $order_id";
+$result = mysqli_query($link, $order_sql);
+$order_infos = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +32,7 @@ $pickup_infos = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-information"></i> Pickup Information</h4>
+                            <h4><i class="mdi mdi-information"></i> Order Information</h4>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ $pickup_infos = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
 
                 <div class="row">
-                    <?php foreach ($pickup_infos as $pickup_info) { ?>
+                    <?php foreach ($order_infos as $order_info) { ?>
                         <div class="col-md-12 col-lg-12">
                             <div id="tracking-pre"></div>
                             <div id="tracking">
@@ -63,8 +63,8 @@ $pickup_infos = $result->fetch_all(MYSQLI_ASSOC);
                                                 <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
                                             </svg>
                                         </div>
-                                        <div class="tracking-date"><?php echo $pickup_info["date_updated"]; ?></div>
-                                        <div class="tracking-content"><?php echo $pickup_info["description"]; ?></div>
+                                        <div class="tracking-date"><?php echo $order_info["date_updated"]; ?></div>
+                                        <div class="tracking-content"><?php echo $order_info["description"]; ?></div>
                                     </div>
                                 </div>
                             </div>

@@ -208,6 +208,7 @@ if (isset($_POST['update_item'])) {
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
 
 </body>

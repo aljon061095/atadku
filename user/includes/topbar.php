@@ -1,6 +1,11 @@
 <?php 
     //Initialize the session
     // session_start();
+
+    $customer_id = $_SESSION["id"];;
+    $notification_sql = "SELECT * FROM notifications WHERE user_id = $customer_id";
+    $result = mysqli_query($link, $notification_sql);
+    $notifications = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <div class="nav-header">
@@ -16,11 +21,60 @@
                 <div class="header-left"></div>
 
                 <ul class="navbar-nav header-right">
-                    <li class="nav-item dropdown notification_dropdown">
-                        <a class="nav-link dz-fullscreen primary" href="#">
-                            <svg id="Capa_1" enable-background="new 0 0 482.239 482.239" height="22" viewBox="0 0 482.239 482.239" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m0 17.223v120.56h34.446v-103.337h103.337v-34.446h-120.56c-9.52 0-17.223 7.703-17.223 17.223z" fill=""/><path d="m465.016 0h-120.56v34.446h103.337v103.337h34.446v-120.56c0-9.52-7.703-17.223-17.223-17.223z" fill=""/><path d="m447.793 447.793h-103.337v34.446h120.56c9.52 0 17.223-7.703 17.223-17.223v-120.56h-34.446z" fill="" /><path d="m34.446 344.456h-34.446v120.56c0 9.52 7.703 17.223 17.223 17.223h120.56v-34.446h-103.337z" fill=""/></svg>
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-envelope fa-fw"></i>
+                            <span class="badge badge-danger badge-counter">
+                                3
+                            <span>
                         </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <h6 class="dropdown-header">
+                                Messages
+                            </h6>
+                            <a class="dropdown-item d-flex align-items-center" href="notifications.php">
+                                <div class="mr-3">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">11/12/13</div>
+                                    <span class="font-weight-bold">Test Messages</span>
+                                </div>
+                            </a>
+                        
+                            <a class="dropdown-item text-center small text-gray-500" href="home.php">Read More Messages</a>
+                        </div>
                     </li>
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bell fa-fw"></i>
+                            <?php if (count($notifications) != 0) { ?>
+                                <span class="badge badge-danger badge-counter">
+                                    <?php echo count($notifications); ?>
+                                <span>
+                            <?php  }?>
+                        </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">
+                                Notifications
+                            </h6>
+                            <a class="dropdown-item d-flex align-items-center" href="notifications.php">
+                                <div class="mr-3">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">11/12/13</div>
+                                    <span class="font-weight-bold">Test Notification</span>
+                                </div>
+                            </a>
+                        
+                            <a class="dropdown-item text-center small text-gray-500" href="notifications.php">Show All Notifications</a>
+                        </div>
+                    </li>
+
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <div class="header-info">

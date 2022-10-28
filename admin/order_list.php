@@ -1,16 +1,10 @@
 <?php
-//Include config file
 require_once "includes/config.php";
 
-//Initialize the session
-session_start();
-
-$restaurant_id = $_SESSION["id"];
-$orders_sql = "SELECT * FROM food_orders WHERE restaurant_id = $restaurant_id";
-$result = mysqli_query($link, $orders_sql);
-$orders = $result->fetch_all(MYSQLI_ASSOC);
+$order_sql = "SELECT * FROM food_orders";
+$result = mysqli_query($link, $order_sql);
+$order_list = $result->fetch_all(MYSQLI_ASSOC);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,25 +29,9 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-cart-plus"></i> Order List</h4>
+                            <h4><i class="mdi mdi-navigation"></i> Order List</h4>
                         </div>
                     </div>
-                </div>
-                <!-- <pre>
-                    <?php print_r($orders); ?>
-                </pre> -->
-                <div class="row">
-                    <?php
-                    if (isset($_SESSION['success_status'])) {
-                    ?>
-                        <div class="alert alert-success alert-dismissable">
-                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                            <?php echo $_SESSION['success_status']; ?>
-                        </div>
-                    <?php
-                        unset($_SESSION['success_status']);
-                    }
-                    ?>
                 </div>
                 <!-- row -->
                 <div class="row">
@@ -66,16 +44,16 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                                             <tr>
                                                 <th>Order Code</th>
                                                 <th>Customer</th>
-                                                <th>Date</th>
-                                                <th>Food</th>
-                                                <th>Charge</th>
+                                                <th>Item or Food</th>
+                                                <th>Delivery Charge</th>
+                                                <th>Order Details</th>
                                                 <th>Total Amount</th>
                                                 <th>Driver</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($orders as $order) { ?>
+                                            <?php foreach ($order_list as $order) { ?>
                                                 <tr>
                                                     <td>
                                                         <a href="order_info.php?order_id=<?php echo $order['id']; ?>">
@@ -84,16 +62,16 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                                                     </td>
                                                     <td>
                                                         <?php
-                                                            $customer_id = $order['customer_id'];
-                                                            $result = mysqli_query($link, "SELECT *
-                                                                    FROM customer WHERE id = $customer_id");
-                                                            $row = mysqli_fetch_array($result);
-                                                            ?>
+                                                        $customer_id = $order['customer_id'];;
+                                                        $result = mysqli_query($link, "SELECT *
+                                                                FROM customer WHERE id = $customer_id");
+                                                        $row = mysqli_fetch_array($result);
+                                                        ?>
                                                         <?php echo $row['full_name']; ?>
                                                     </td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
+                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo number_format($order['total'] + 49, 2); ?></td>
                                                     <td>
                                                         <?php
@@ -130,11 +108,63 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                             </div>
                         </div>
                     </div>
+				</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Food List -->
+    <div class="modal fade" id="addStoreModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add Item</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" name="store" id="store" placeholder="Store Name">
+                                <label for="store">Store</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name">
+                                <label for="item_name">Item Name</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-floating mb-2">
+                                <input type="number" class="form-control" name="price" id="price" placeholder="Price">
+                                <label for="price">Price</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-floating mb-2">
+                                <input type="file" class="form-control" name="image" id="image" placeholder="Imgae">
+                                <label for="image">Image</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-floating mb-2">
+                                <textarea class="form-control" placeholder="Description" name="description" id="description"></textarea>
+                                <label for="description">Description</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="save_item" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <?php include 'includes/feedbacks.php' ?>
+
     <?php include 'includes/footer.php' ?>
 
 </body>
