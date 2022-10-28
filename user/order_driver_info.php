@@ -30,11 +30,21 @@ if (isset($_POST['delivered'])) {
                     VALUES ('$order_id', '$description')";
         mysqli_query($link, $query_status);
 
+        //add admin commission
+        $result = mysqli_query($link, "SELECT *
+                FROM settings WHERE owner_id = $restaurant_id");
+        $row = mysqli_fetch_array($result);
+        $admin_commission_percentage = isset($row) ? $row['admin_commission'] : 5;
+        $total_admin_commission = ($admin_commission_percentage / 100) * $total_amount;
+        $query_admin_commission = "INSERT INTO admin_commission(admin_commission)
+            VALUES ('$total_admin_commission')";
+        mysqli_query($link, $query_admin_commission);
 
         //add comission driver
-        $query_sales = "INSERT INTO commission(driver_id, commission)
+        $delivery_charges = isset($row) ? $row['delivery_charge'] : 49;
+        $query_commission = "INSERT INTO commission(driver_id, commission)
         VALUES ('$driver_id', '$charge')";
-            mysqli_query($link, $query_sales);
+            mysqli_query($link, $query_commission);
 
         //add sales restaurant
         $query_sales = "INSERT INTO sales(restaurant_id, sales)

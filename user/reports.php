@@ -1,5 +1,14 @@
 <?php 
+    //Include config file
+    require_once "includes/config.php";
+
     session_start();
+
+    $owner_id =  $_SESSION["id"];
+    //owner
+    $result = mysqli_query($link, "SELECT SUM(sales) AS sales_sum FROM sales WHERE restaurant_id = '$owner_id'");
+    $row = mysqli_fetch_assoc($result);
+    $sales = $row['sales_sum'];
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +32,7 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Commission Report</h4>
+                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Reports </h4>
                         </div>
                     </div>
                 </div>
@@ -37,57 +46,16 @@
                               <thead>
                                  <tr>
                                      <th>Month</th>
-                                     <th>Commission</th>
+                                     <th>Sales</th>
                                  </tr>
                              </thead>
                                     <tbody>
                                        <tr>
-                                           <td>January</td>
-                                           <td>500</td>
-                                       </tr>
-                                       <tr>
-                                           <td>February</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>March</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>April</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>May</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>June</td>
-                                           <td>500</td>
-                                       </tr>
-                                       <tr>
-                                           <td>July</td>
-                                           <td>950</td>
-                                       </tr>
-                                       <tr>
-                                           <td>August</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>September</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
                                            <td>October</td>
-                                           <td>750</td>
-                                       </tr>
-                                       <tr>
-                                           <td>November</td>
-                                           <td>1,000</td>
-                                       </tr>
-                                       <tr>
-                                           <td>December</td>
-                                           <td>1,250</td>
+                                           <td>
+                                                <input class="monthly-sales" type="hidden" value="<?php echo $sales; ?>" />
+                                                <?php echo $sales; ?>
+                                            </td>
                                        </tr>
                                     </tbody>
                                 </table>
@@ -109,18 +77,16 @@
     <?php include 'includes/footer.php'?>
     <script src="../js/chart.js"></script>
     <script>
+        $monthlySales = $('.monthly-sales').val();
         document.addEventListener("DOMContentLoaded", function () {
-
-            // Bar Chart
-
             var barChartData = {
-                labels: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+                labels: ["October"],
                 datasets: [{
-                    label: 'Commission',
+                    label: 'Sales',
                     backgroundColor: 'rgb(45,34,23)',
                     borderColor: 'rgba(0, 158, 251, 1)',
                     borderWidth: 1,
-                    data: [500,750,500,1000,1250,750,500,1000,750,1250,500,1250]
+                    data: [$monthlySales]
                 }]
             };
 

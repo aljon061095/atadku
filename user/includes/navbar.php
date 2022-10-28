@@ -98,15 +98,17 @@
                             <h6 class="dropdown-header">
                                 Notifications
                             </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="notifications.php">
-                                <div class="mr-3">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">11/12/13</div>
-                                    <span class="font-weight-bold">Test Notification</span>
-                                </div>
-                            </a>
+                            <?php foreach($notifications as $notification) { ?>
+                                <a class="dropdown-item d-flex align-items-center" href="notifications.php">
+                                    <div class="mr-3">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">11/12/13</div>
+                                        <span class="font-weight-bold">Test Notification</span>
+                                    </div>
+                                </a>
+                            <?php } ?>
                         
                             <a class="dropdown-item text-center small text-gray-500" href="notifications.php">Show All Notifications</a>
                         </div>

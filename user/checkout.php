@@ -102,7 +102,7 @@ if (isset($_POST['save_online_payment'])) {
                                 
                                 <?php
                                     $result = mysqli_query($link, "SELECT *
-                                                FROM delivery_charge WHERE restaurant_id = $restaurant_id");
+                                                FROM settings WHERE owner_id = $restaurant_id");
                                     $delivery_charge = mysqli_fetch_array($result);
                                 ?>
                                 <p><strong>Delivery Fee</strong>: ₱ <?php echo isset($delivery_charge) ? number_format($delivery_charge['delivery_charge'], 2) : number_format(49, 2) ; ?></p>

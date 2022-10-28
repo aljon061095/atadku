@@ -85,16 +85,11 @@ if (isset($_POST['update_food'])) {
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-food"></i> List of Foods</h4>
-                            <!-- <pre>
-                                <?php
-                                print_r($food_list);
-                                ?>
-                            </pre> -->
+
                             <a href="javascript:void(0);" data-toggle="modal" data-target="#addFoodModal" class="btn fs-22 py-1 btn-success">Add Food</a>
                         </div>
                     </div>
                 </div>
-                <!-- row -->
 
                 <div class="row">
                     <?php

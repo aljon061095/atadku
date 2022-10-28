@@ -1,9 +1,11 @@
 <?php 
     //Initialize the session
     // session_start();
+    //Include config file
+    require_once "includes/config.php";
 
-    $customer_id = $_SESSION["id"];;
-    $notification_sql = "SELECT * FROM notifications WHERE user_id = $customer_id";
+    $user_id = $_SESSION["id"];;
+    $notification_sql = "SELECT * FROM notifications WHERE user_id = $user_id";
     $result = mysqli_query($link, $notification_sql);
     $notifications = $result->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -61,15 +63,17 @@
                             <h6 class="dropdown-header">
                                 Notifications
                             </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="notifications.php">
-                                <div class="mr-3">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">11/12/13</div>
-                                    <span class="font-weight-bold">Test Notification</span>
-                                </div>
-                            </a>
+                            <?php foreach($notifications as $notification) { ?>
+                                <a class="dropdown-item d-flex align-items-center" href="notifications.php">
+                                    <div class="mr-3">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">11/12/13</div>
+                                        <span class="font-weight-bold">Test Notification</span>
+                                    </div>
+                                </a>
+                            <?php } ?>
                         
                             <a class="dropdown-item text-center small text-gray-500" href="notifications.php">Show All Notifications</a>
                         </div>

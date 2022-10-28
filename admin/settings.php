@@ -1,3 +1,10 @@
+<?php
+    //Include config file
+    require_once "includes/config.php";
+
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,17 +17,11 @@
 
     <?php include 'includes/preloader.php'?>
 
-    <!--**********************************
-        Main wrapper start
-    ***********************************-->
     <div id="main-wrapper">
 
         <?php include 'includes/topbar.php'?>
         <?php include 'includes/sidebar.php'?>
 
-        <!--**********************************
-            Content body start
-        ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
@@ -43,13 +44,7 @@
                                 <div class="basic-form">
                                     <form>
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Max Order Allowed</label>
-                                            <div class="col-sm-9">
-                                                <input type="number" class="form-control" placeholder="ex. 12">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Commission</label>
+                                            <label class="col-sm-3 col-form-label">Administrator Commission %</label>
                                             <div class="col-sm-9">
                                                 <input type="number" class="form-control" placeholder="ex. 12%">
                                             </div>
@@ -73,13 +68,7 @@
 				</div>
             </div>
         </div>
-        <!--**********************************
-            Content body end
-        ***********************************-->
     </div>
-    <!--**********************************
-        Main wrapper end
-    ***********************************-->
 
     <?php include 'includes/footer.php'?>
 

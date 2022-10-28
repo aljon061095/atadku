@@ -68,7 +68,6 @@ if (isset($_POST['save_food'])) {
                 </div>
                 <!-- row -->
 
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
