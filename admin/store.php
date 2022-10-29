@@ -116,10 +116,11 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil"></i></a>
-                                                            <a href="#" class="btn btn-danger shadow btn-xs sharp p-0"><i class="mdi mdi-eraser"></i></a>
+                                                            <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil" data-toggle="modal" data-target="#update_store_modal<?php echo $store['id'] ?>"></i></button>
+                                                            <button type="button" class="btn btn-danger shadow btn-xs sharp p-0"><i class="mdi mdi-eraser"></i></button>
                                                         </div>												
                                                     </td>
+                                                    <?php include 'update-store.php'; ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -148,7 +149,7 @@
                     <div class="form-group">
                         <div class="form-floating mb-2">
                             <input type="text" class="form-control" name="name" id="restaurant" placeholder="Restaurant Name" required>
-                            <label for="restaurant">Restaurant Name</label>
+                            <label for="restaurant">Store Name</label>
                         </div>
                     </div>
                     <div class="form-group">

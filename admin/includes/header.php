@@ -16,4 +16,10 @@
     <link href="../css/main_styles.css" rel="stylesheet">
     <link href="../css/styles.css" rel="stylesheet">
     <link href="../css/timeline.css" rel="stylesheet">
+    <link href="../css/new_styles.css" rel="stylesheet">
+    <link href="../css/menu.css" rel="stylesheet">
+    <link href="../css/navbar.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template-->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 </head>

@@ -45,7 +45,7 @@
 			</li>
 			<li>
 				<a href="driver.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/driver.php') { ?>active-nav <?php } ?>" aria-expanded="false">
-					<i class="mdi mdi-truck-delivery"></i>
+					<i class="mdi mdi-bike"></i>
 					<span class="nav-text">Delivery Driver</span>
 				</a>
 			</li>
@@ -56,15 +56,9 @@
 				</a>
 			</li>
 			<li>
-				<a href="settings.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/settings.php') { ?>active-nav <?php } ?>" aria-expanded="false">
-					<i class="mdi mdi-cogs"></i>
-					<span class="nav-text">System Settings</span>
-				</a>
-			</li>
-			<li>
 				<a href="reports.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/reports.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-chart-bar-stacked"></i>
-					<span class="nav-text">Sales Report</span>
+					<span class="nav-text">Commission Report</span>
 				</a>
 			</li>
 		</ul>

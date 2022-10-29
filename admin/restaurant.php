@@ -116,10 +116,11 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil"></i></a>
-                                                            <a href="#" class="btn btn-danger shadow btn-xs sharp p-0"><i class="mdi mdi-eraser"></i></a>
-                                                        </div>												
+                                                            <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil" data-toggle="modal" data-target="#update_restaurant_modal<?php echo $restaurant['id'] ?>"></i></button>
+                                                            <button type="button" class="btn btn-danger shadow btn-xs sharp p-0"><i class="mdi mdi-eraser"></i></button>
+                                                        </div>											
                                                     </td>
+                                                    <?php include 'update_restaurant.php'; ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

@@ -74,7 +74,7 @@
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-truck-delivery"></i> Delivery Driver</h4>
+                            <h4><i class="mdi mdi-bike"></i> Delivery Driver</h4>
                         </div>
                         <a href="javascript:void(0);" data-toggle="modal" data-target="#addDriverModal" class="btn fs-22 py-1 btn-success">Add Driver</a>
                     </div>
