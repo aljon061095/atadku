@@ -182,9 +182,10 @@ if (isset($_POST['register_driver'])) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="form-floating">
-                                                                <input type="file" class="form-control" name="profile" id="profile" placeholder="Profile" required>
+                                                                <input type="file" class="form-control" name="profile" id="profile" placeholder="Profile" accept="image/*" required>
                                                                 <label for="profile">Profile</label>
                                                             </div>
+                                                            <small class="text-muted">You must post a close-up photo of oneself; it cannot be a side or rear view.</small>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-floating">
@@ -346,9 +347,10 @@ if (isset($_POST['register_driver'])) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="form-floating">
-                                                                <input type="file" class="form-control" name="profile" id="profile" placeholder="Profile">
+                                                                <input type="file" class="form-control" name="profile" id="profile" accept="image/*" placeholder="Profile">
                                                                 <label for="profile">Profile</label>
                                                             </div>
+                                                            <small class="text-muted">You must post a close-up photo of oneself; it cannot be a side or rear view.</small>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-floating">
@@ -377,7 +379,7 @@ if (isset($_POST['register_driver'])) {
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-floating">
-                                                                <input type="file" class="form-control" name="valid_id" id="valid_id" placeholder="Valid Identification">
+                                                                <input type="file" class="form-control" name="valid_id" id="valid_id" accept="image/*" placeholder="Valid Identification">
                                                                 <label for="valid_id">Valid Identification</label>
                                                             </div>
                                                         </div>

@@ -7,7 +7,7 @@ session_start();
 
 $driver_id = $_SESSION["id"];
 $order_id = $_GET["order_id"];
-$orders_sql = "SELECT * FROM food_orders WHERE driver_id = $driver_id && id = $order_id";
+$orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id && id = $order_id";
 $result = mysqli_query($link, $orders_sql);
 $order = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -18,7 +18,7 @@ if (isset($_POST['delivered'])) {
     $charge = $_POST['charge'];
     $driver_id = $_POST['driver_id'];
 
-    $query = "UPDATE `food_orders` SET `status` = 3 WHERE id = $id";
+    $query = "UPDATE `orders` SET `status` = 3 WHERE id = $id";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {

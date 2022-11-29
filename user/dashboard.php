@@ -16,16 +16,16 @@ $item_sql = "SELECT * FROM item_list WHERE status = 1 and store_id = $store_id";
 $item_result = mysqli_query($link, $item_sql);
 $item_list = $item_result->fetch_all(MYSQLI_ASSOC);
 
-$food_orders_sql = "SELECT * FROM food_orders WHERE restaurant_id = $restaurant_id";
-$food_orders_result = mysqli_query($link, $food_orders_sql);
-$food_orders = $food_orders_result->fetch_all(MYSQLI_ASSOC);
+$orders_sql = "SELECT * FROM orders WHERE restaurant_id = $restaurant_id";
+$orders_result = mysqli_query($link, $orders_sql);
+$orders = $orders_result->fetch_all(MYSQLI_ASSOC);
 
 $feedback_sql = "SELECT * FROM driver WHERE status = 1";
 $feedback_result = mysqli_query($link, $feedback_sql);
 $feedback = $feedback_result->fetch_all(MYSQLI_ASSOC);
 
 //for deliver rider
-$driver_delivery_orders_sql = "SELECT * FROM food_orders WHERE driver_id = $driver_id";
+$driver_delivery_orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id";
 $driver_orders_result = mysqli_query($link, $driver_delivery_orders_sql);
 $driver_orders = $driver_orders_result->fetch_all(MYSQLI_ASSOC);
 
@@ -133,7 +133,7 @@ $sales = $row['sales_sum'];
 												<i class="mdi mdi-cart-outline"></i>
 											</span>
 											<div class="media-body">
-												<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($food_orders); ?></span></h3>
+												<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($orders); ?></span></h3>
 												<p class="mb-0">Total Orders</p>
 											</div>
 										</div>

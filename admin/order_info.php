@@ -4,30 +4,8 @@ require_once "includes/config.php";
 //session start
 session_start();
 
-if (isset($_POST['approved'])) {
-    $id = $_POST['order_id'];
-    $driver_id = $_POST['driver_id'];
-    $driver_name = $_POST['driver_name'];
-    $status = 2;
-
-    $query = "UPDATE `food_orders` SET `driver_id` = $driver_id, `status` = $status WHERE id = $id";
-    $query_run = mysqli_query($link, $query);
-
-    if ($query_run) {
-        //update the order status -- assigned driver
-        $description = "Your order is now approved. Your delivery rider is  $driver_name. Thank you!";
-
-        $query_status = "INSERT INTO order_status(order_id, description)
-            VALUES ('$id', '$description')";
-        $query_status_run = mysqli_query($link, $query_status);
-
-        $_SESSION['success_status'] = "You have successfully updated the status of the item.";
-        header("location: order_list.php");
-    }
-}
-
 $order_id = $_GET['order_id'];
-$order_sql = "SELECT * FROM food_orders WHERE id = $order_id";
+$order_sql = "SELECT * FROM orders WHERE id = $order_id";
 $result = mysqli_query($link, $order_sql);
 $order = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -120,32 +98,18 @@ $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
                                                 <label for="account_number">Account Number</label>
                                             </div>
                                         </div>
-                                        <?php if ($order['status'] == 1) { ?>
-                                            <div class="form-group">
-                                                <div class="form-floating">
-                                                    <select class="form-select" id="driver" name="driver" required>
-                                                        <option selected value="">Select Driver</option>
-                                                        <?php foreach ($drivers as $driver) { ?>
-                                                            <option value="<?php echo $driver['id']; ?>"><?php echo $driver['full_name']; ?></option>
-                                                        <?php  } ?>
-                                                    </select>
-                                                    <label for="driver_id"></label>
-                                                </div>
+                                        <?php
+                                            $driver_id = $order['driver_id'];
+                                            $result = mysqli_query($link, "SELECT *
+                                                    FROM driver WHERE id = $driver_id");
+                                            $driver = mysqli_fetch_array($result);
+                                        ?>
+                                        <div class="form-group">
+                                            <div class="form-floating mb-2">
+                                                <input type="text" class="form-control" value=" <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet." ; ?>" placeholder="Delivery Rider" name="driver" id="driver" readonly>
+                                                <label for="driver">Delivery Rider</label>
                                             </div>
-                                        <?php } else { ?>
-                                            <?php
-                                                $driver_id = $order['driver_id'];
-                                                $result = mysqli_query($link, "SELECT *
-                                                        FROM driver WHERE id = $driver_id");
-                                                $driver = mysqli_fetch_array($result);
-                                            ?>
-                                            <div class="form-group">
-                                                <div class="form-floating mb-2">
-                                                    <input type="text" class="form-control" value=" <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet." ; ?>" placeholder="Delivery Rider" name="driver" id="driver" readonly>
-                                                    <label for="driver">Delivery Rider</label>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="float-right">

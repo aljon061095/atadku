@@ -122,7 +122,7 @@ if (isset($_POST['save_item'])) {
                                                             <button class="btn btn-primary shadow btn-xs sharp mr-1 p-0" data-toggle="modal" type="button" data-target="#update_item_modal<?php echo $item['id'] ?>">
                                                                 <i class="mdi mdi-pencil"></i>
                                                             </button>
-                                                            <button class="btn btn-danger shadow btn-xs sharp p-0" data-toggle="modal" type="button" data-target="#update_item_modal<?php echo $item['id'] ?>">
+                                                            <button class="btn btn-danger shadow btn-xs sharp p-0 delete" data-id="<?php echo $item['id']; ?>" data-table-name="item_list">
                                                                 <i class="mdi mdi-eraser"></i>
                                                             </button>
                                                         </div>
@@ -194,6 +194,44 @@ if (isset($_POST['save_item'])) {
     </div>
 
     <?php include 'includes/footer.php' ?>
+    <script>
+        $(document).ready(function() {
+            // Delete 
+            $('.delete').click(function() {
+                var el = this;
+
+                var deleteId = $(this).data('id');
+                var tableName = $(this).data('table-name');
+
+                var confirmalert = confirm("Are you sure you want to delete?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'remove.php',
+                        type: 'POST',
+                        data: {
+                            id: deleteId,
+                            tableName: tableName
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                // Remove row from HTML Table
+                                $(el).closest('tr').css('background', 'tomato');
+                                $(el).closest('tr').fadeOut(800, function() {
+                                    $(this).remove();
+                                });
+
+                                $('.deleted-message').removeClass('hidden');
+                            } 
+
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
 
 </body>
 

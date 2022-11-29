@@ -1,7 +1,7 @@
 <?php
 require_once "includes/config.php";
 
-$order_sql = "SELECT * FROM food_orders";
+$order_sql = "SELECT * FROM orders";
 $result = mysqli_query($link, $order_sql);
 $order_list = $result->fetch_all(MYSQLI_ASSOC);
 ?>

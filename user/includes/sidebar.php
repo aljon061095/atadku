@@ -37,6 +37,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="order_pickup_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/order_pickup_list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+                        <i class="mdi mdi-bike"></i>
+                        <span class="nav-text">Order List</span>
+                    </a>
+                </li>
+                <li>
                     <a href="order_driver.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/order_driver.php') { ?>active-nav <?php } ?>" aria-expanded="false">
                         <i class="mdi mdi-cart-plus"></i>
                         <span class="nav-text">Delivery List</span>
@@ -51,7 +57,7 @@
                 <li>
                     <a href="reports.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/reports.php') { ?>active-nav <?php } ?>" aria-expanded="false">
                         <i class="mdi mdi-chart-bar-stacked"></i>
-                        <span class="nav-text">Commission Report</span>
+                        <span class="nav-text">Commission</span>
                     </a>
                 </li>
             <?php } ?>

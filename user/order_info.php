@@ -7,7 +7,7 @@ session_start();
 
 $restaurant_id = $_SESSION["id"];
 $order_id = $_GET["order_id"];
-$orders_sql = "SELECT * FROM food_orders WHERE restaurant_id = $restaurant_id && id = $order_id";
+$orders_sql = "SELECT * FROM orders WHERE restaurant_id = $restaurant_id && id = $order_id";
 $result = mysqli_query($link, $orders_sql);
 $order = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -19,7 +19,7 @@ $driver = mysqli_fetch_array($driver_result);
 if (isset($_POST['ready_for_delivery'])) {
     $id = $_POST['order_id'];
 
-    $query = "UPDATE `food_orders` SET `status` = 2 WHERE id = $id";
+    $query = "UPDATE `orders` SET `status` = 2 WHERE id = $id";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {

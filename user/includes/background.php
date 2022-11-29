@@ -11,12 +11,12 @@
 
         if ($id > 0) {
             // Check record exists
-            $checkRecord = mysqli_query($link, "SELECT * FROM food_orders WHERE id=" . $id);
+            $checkRecord = mysqli_query($link, "SELECT * FROM orders WHERE id=" . $id);
             $totalrows = mysqli_num_rows($checkRecord);
 
             if ($totalrows > 0) {   
                 // update status item record
-                $query = "UPDATE food_orders SET status = 2 WHERE id=" . $id;
+                $query = "UPDATE orders SET status = 2 WHERE id=" . $id;
                 mysqli_query($link, $query);
                 return 1;
                 exit;

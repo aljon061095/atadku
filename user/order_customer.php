@@ -6,7 +6,7 @@
     session_start();
 
     $customer_id = $_SESSION["id"];
-    $orders_sql = "SELECT * FROM food_orders WHERE customer_id = $customer_id";
+    $orders_sql = "SELECT * FROM orders WHERE customer_id = $customer_id";
     $result = mysqli_query($link, $orders_sql);
     $orders = $result->fetch_all(MYSQLI_ASSOC);
 ?>

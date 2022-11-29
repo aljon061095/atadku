@@ -6,7 +6,7 @@
     session_start();
 
     $driver_id = $_SESSION["id"];
-    $orders_sql = "SELECT * FROM food_orders WHERE driver_id = $driver_id";
+    $orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id";
     $result = mysqli_query($link, $orders_sql);
     $orders = $result->fetch_all(MYSQLI_ASSOC);
 ?>

@@ -106,9 +106,9 @@
                                                 <th>Address</th>
                                                 <th>Email</th>
                                                 <th>Contact Number</th>
-                                                <th>License</th>
+                                                <th>Valid Id</th>
                                                 <th>Status</th>
-                                                <th></th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -130,7 +130,7 @@
                                                     <td>
                                                         <div class="d-flex">
                                                             <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="mdi mdi-pencil"></i></a>
-                                                            <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="mdi mdi-eraser"></i></a>
+                                                            <button type="button" class="btn btn-danger shadow btn-xs sharp delete" data-id="<?php echo $driver['id']; ?>" data-table-name="driver"><i class="mdi mdi-eraser"></i></button>
                                                         </div>												
                                                     </td>
                                                 </tr>
@@ -215,6 +215,44 @@
         </div>
     </div>
     <?php include 'includes/footer.php'?>
+    <script>
+        $(document).ready(function() {
+            // Delete 
+            $('.delete').click(function() {
+                var el = this;
+
+                var deleteId = $(this).data('id');
+                var tableName = $(this).data('table-name');
+
+                var confirmalert = confirm("Are you sure you want to delete?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'remove.php',
+                        type: 'POST',
+                        data: {
+                            id: deleteId,
+                            tableName: tableName
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                // Remove row from HTML Table
+                                $(el).closest('tr').css('background', 'tomato');
+                                $(el).closest('tr').fadeOut(800, function() {
+                                    $(this).remove();
+                                });
+
+                                $('.deleted-message').removeClass('hidden');
+                            } 
+
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
 
 </body>
 

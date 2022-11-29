@@ -19,7 +19,7 @@
         if (array_key_exists('logo', $_FILES)) {
             if ($_FILES['logo']['tmp_name'] != '') {
                 $filename = strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['logo']['name']);
-                $move = move_uploaded_file($_FILES['logo']['tmp_name'], '../uploads' . $filename);
+                $move = move_uploaded_file($_FILES['logo']['tmp_name'], '/uploads' . $filename);
 
                 if ($move) {
                     $logo = $filename;
@@ -117,7 +117,7 @@
                                                     <td>
                                                         <div class="d-flex">
                                                             <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil" data-toggle="modal" data-target="#update_restaurant_modal<?php echo $restaurant['id'] ?>"></i></button>
-                                                            <button type="button" class="btn btn-danger shadow btn-xs sharp p-0"><i class="mdi mdi-eraser"></i></button>
+                                                            <button type="button" class="btn btn-danger shadow btn-xs sharp p-0 delete" data-id="<?php echo $restaurant['id']; ?>" data-table-name="restaurant"><i class="mdi mdi-eraser"></i></button>
                                                         </div>											
                                                     </td>
                                                     <?php include 'update_restaurant.php'; ?>
@@ -154,7 +154,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-floating mb-2">
-                            <input type="file" class="form-control" name="logo" id="logo" placeholder="Logo" required>
+                            <input type="file" class="form-control" name="logo" id="logo" placeholder="Logo" accept="image/*" required>
                             <label for="logo">Logo</label>
                         </div>
                     </div>
@@ -198,6 +198,44 @@
     </div>
 
     <?php include 'includes/footer.php'?>
+    <script>
+        $(document).ready(function() {
+            // Delete 
+            $('.delete').click(function() {
+                var el = this;
+
+                var deleteId = $(this).data('id');
+                var tableName = $(this).data('table-name');
+
+                var confirmalert = confirm("Are you sure you want to delete?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'remove.php',
+                        type: 'POST',
+                        data: {
+                            id: deleteId,
+                            tableName: tableName
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                // Remove row from HTML Table
+                                $(el).closest('tr').css('background', 'tomato');
+                                $(el).closest('tr').fadeOut(800, function() {
+                                    $(this).remove();
+                                });
+
+                                $('.deleted-message').removeClass('hidden');
+                            } 
+
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
 
 </body>
 

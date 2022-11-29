@@ -1,7 +1,7 @@
 <?php
 
 class Order {	
-	private $ordersTable = 'food_orders';	
+	private $ordersTable = 'orders';	
 	private $link;
 	
 	public function __construct($db){

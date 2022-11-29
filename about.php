@@ -105,7 +105,7 @@ if (isset($_POST['submit_post'])) {
                     <div class="col-xl-4">
                         <div class="card p-2">
                             <div class="card-body">
-                                <div class="profile-statistics mb-5">
+                                <div class="pro-statistics mb-5">
                                     <div class="text-center">
                                         <div class="row">
                                             <div class="col">

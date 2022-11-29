@@ -6,7 +6,7 @@ require_once "includes/config.php";
 session_start();
 
 $restaurant_id = $_SESSION["id"];
-$orders_sql = "SELECT * FROM food_orders WHERE restaurant_id = $restaurant_id";
+$orders_sql = "SELECT * FROM orders WHERE restaurant_id = $restaurant_id";
 $result = mysqli_query($link, $orders_sql);
 $orders = $result->fetch_all(MYSQLI_ASSOC);
 ?>
