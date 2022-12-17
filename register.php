@@ -50,6 +50,7 @@ if (isset($_POST['register_owner'])) {
     $tin = $_POST['tin'];
     $id_type = $_POST['id_type'];
     $valid_id = strtotime(date('y-m-d H:i')) . '_' . $_POST['name'];
+    $business_permit = strtotime(date('y-m-d H:i')) . '_' . $_POST['name'];
     $address = $_POST['address'];
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -67,6 +68,17 @@ if (isset($_POST['register_owner'])) {
         }
     }
 
+    if (array_key_exists('business_permit', $_FILES)) {
+        if ($_FILES['business_permit']['tmp_name'] != '') {
+            $filename = 'logo' . '_' . strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['business_permit']['name']);
+            $move = move_uploaded_file($_FILES['business_permit']['tmp_name'], 'uploads/' . $filename);
+
+            if ($move) {
+                $business_permit = $filename;
+            }
+        }
+    }
+
     if (array_key_exists('valid_id', $_FILES)) {
         if ($_FILES['valid_id']['tmp_name'] != '') {
             $filename = 'valid_id' . '_' . strtotime(date('y-m-d H:i')) . '_' . basename($_FILES['valid_id']['name']);
@@ -78,8 +90,8 @@ if (isset($_POST['register_owner'])) {
         }
     }
 
-    $query = "INSERT INTO $type(name, logo, owner_name, tin, address, username, password, id_type, valid_id, status)
-            VALUES ('$name', '$logo', '$owner_name', '$tin', '$address', '$username', '$password', '$id_type', '$valid_id', '$status')";
+    $query = "INSERT INTO $type(name, logo, owner_name, tin, address, username, password, id_type, valid_id, business_permit, status)
+            VALUES ('$name', '$logo', '$owner_name', '$tin', '$address', '$username', '$password', '$id_type', '$valid_id', '$business_permit' '$status')";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {
@@ -312,6 +324,12 @@ if (isset($_POST['register_driver'])) {
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="form-floating">
+                                                                <input type="file" class="form-control" name="business_permit" id="business_permit" placeholder="Valid Identification" required>
+                                                                <label for="business_permit">Business Permit</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-floating">
                                                                 <input type="file" class="form-control" name="logo" id="logo" placeholder="Logo">
                                                                 <label for="logo">Logo</label>
                                                             </div>
@@ -322,18 +340,26 @@ if (isset($_POST['register_driver'])) {
                                                                 <label for="tin">TIN</label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <div class="form-floating">
-                                                                <input type="text" class="form-control" name="username" id="username" placeholder="Username">
-                                                                <label for="username">Username</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-floating">
+                                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                                                                    <label for="username">Username</label>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <div class="form-floating">
-                                                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                                                <label for="password">Password</label>
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-floating">
+                                                                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                                                    <label for="password">Password</label>
+                                                                </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="text-center">
                                                         <button type="submit" name="register_owner" class="btn btn-primary btn-block mb-2 mt-2">Register</button>
@@ -406,7 +432,7 @@ if (isset($_POST['register_driver'])) {
                                                         <div class="form-group">
                                                             <div class="form-floating">
                                                                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                                                <label for="password">Password</label>
+                                                                <label for="password"> Password</label>
                                                             </div>
                                                         </div>
                                                     </div>

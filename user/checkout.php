@@ -77,7 +77,7 @@ if (isset($_POST['save_online_payment'])) {
                 <div class='row'>
                     <div class="col-md-12">
                         <h3>Delivery Information</h3>
-                        <p><?php echo $customer["address"]; ?></p>
+                        <p><strong>Address</strong>: <?php echo $customer["address"]; ?></p>
                         <p><strong>Phone</strong>: <?php echo $customer["number"]; ?></p>
                         <p><strong>Email</strong>: <?php echo $customer["email_address"]; ?></p>
                         <div class="row mt-2">

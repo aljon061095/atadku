@@ -1,5 +1,5 @@
 <div class="nav-header">
-            <a href="welcome.php" class="brand-logo">
+            <a href="index.php" class="brand-logo">
                 <img src="images/avatar/logo_main.png" alt="" width="100">
             </a>
         </div>
@@ -12,7 +12,7 @@
 
                         <ul class="navbar-nav header-right">
 							<li class="nav-item dropdown notification_dropdown">
-                                <a class="nav-link primary <?php if ($_SERVER['PHP_SELF'] == '/atadku/welcome.php') { ?>active-nav <?php } ?>" href="welcome.php"><i class="mdi mdi-food"></i> Restaurant</a>
+                                <a class="nav-link primary <?php if ($_SERVER['PHP_SELF'] == '/atadku/index.php') { ?>active-nav <?php } ?>" href="index.php"><i class="mdi mdi-food"></i> Restaurant</a>
 							</li>
                             <li class="nav-item dropdown notification_dropdown">
                                 <a class="nav-link primary <?php if ($_SERVER['PHP_SELF'] == '/atadku/store.php') { ?>active-nav <?php } ?>" href="store.php"><i class="mdi mdi-home"></i> Store</a>

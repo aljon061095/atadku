@@ -369,7 +369,7 @@
                                         <div class="new-account mt-3 text-center">
                                             <p>Don't have an account? <a class="text-primary" href="register.php">Sign up</a></p>
                                             <div class="form-group">
-                                                <a href="welcome.php" class="btn btn-secondary h-50">Back to Homepage</a>
+                                                <a href="index.php" class="btn btn-secondary h-50">Back to Homepage</a>
                                             </div>
                                         </div>
                                     </div>

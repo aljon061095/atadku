@@ -27,7 +27,7 @@ $order_infos = $result->fetch_all(MYSQLI_ASSOC);
         <?php include 'includes/navbar.php' ?>
         <?php include 'includes/sidebar.php' ?>
 
-        <div class="content-body" style="padding-top: 5rem;">
+        <div class="content-body" style="padding-top: 7rem;">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
