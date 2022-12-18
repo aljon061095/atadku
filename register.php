@@ -30,7 +30,7 @@ if (isset($_POST['register_customer'])) {
         }
     }
 
-    $query = "INSERT INTO customer(profile, full_name, address, number, email_address, username, password, id_type, valid_id status)
+    $query = "INSERT INTO customer(profile, full_name, address, number, email_address, username, password, id_type, valid_id, status)
             VALUES ('$profile', '$full_name', '$address', '$number', '$email_address', '$username', '$password', '$id_type', '$valid_id',  '$status')";
     $query_run = mysqli_query($link, $query);
 
@@ -91,7 +91,7 @@ if (isset($_POST['register_owner'])) {
     }
 
     $query = "INSERT INTO $type(name, logo, owner_name, tin, address, username, password, id_type, valid_id, business_permit, status)
-            VALUES ('$name', '$logo', '$owner_name', '$tin', '$address', '$username', '$password', '$id_type', '$valid_id', '$business_permit' '$status')";
+            VALUES ('$name', '$logo', '$owner_name', '$tin', '$address', '$username', '$password', '$id_type', '$valid_id', '$business_permit', '$status')";
     $query_run = mysqli_query($link, $query);
 
     if ($query_run) {

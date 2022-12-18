@@ -6,7 +6,7 @@
     session_start();
 
     $driver_id = $_SESSION["id"] ;
-    $pickup_sql = "SELECT * FROM pickup WHERE driver_id = $driver_id";
+    $pickup_sql = "SELECT * FROM pickup";
     $result = mysqli_query($link, $pickup_sql);
     $pickup_list = $result->fetch_all(MYSQLI_ASSOC);
 ?>

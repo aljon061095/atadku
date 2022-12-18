@@ -86,7 +86,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Delivery Charge</th>
-                                    <td><strong>₱ <?php echo number_format($order['charge'], 2); ?></strong></td>
+                                    <td><strong>₱ <?php echo number_format($order['charge'] > 0 ? $order['charge'] : 49, 2); ?></strong></td>
                                 </tr>
                             </tbody>
                          </table>

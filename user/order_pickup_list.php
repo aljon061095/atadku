@@ -168,7 +168,7 @@ if (isset($_POST['accept_pickup'])) {
                                             <div class="badge badge-success">Delivered to:</div><br />
                                             <span class="card-text"><?php echo $customer['full_name']; ?></span><br />
                                             <span class="card-text"><?php echo $customer['address']; ?></span><br />
-                                            <span class="card-text">Delivery Charge: <strong>₱ <?php echo number_format($order['charge'], 2); ?></strong></span>
+                                            <span class="card-text">Delivery Charge: <strong>₱ <?php echo number_format($order['charge'] > 0 ? $order['charge'] : 49, 2); ?></strong></span>
                                         </div>
                                     </div>
                                     <div class="card-footer">
@@ -200,7 +200,7 @@ if (isset($_POST['accept_pickup'])) {
                                             <div class="badge badge-success">Delivered to:</div><br />
                                             <span class="card-text"><?php echo $pickup['recipient_name']; ?></span><br />
                                             <span class="card-text"><?php echo $pickup['recipient_address']; ?></span><br />
-                                            <span class="card-text">Pickup Delivery Charge: <strong>₱ <?php echo number_format($order['charge'], 2); ?></strong></span>
+                                            <span class="card-text">Pickup Delivery Charge: <strong>₱ <?php echo number_format($order['charge'] > 0 ? $order['charge'] : 49, 2); ?></strong></span>
                                         </div>
                                     </div>
                                     <div class="card-footer">
