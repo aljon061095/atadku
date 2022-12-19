@@ -94,7 +94,7 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                                                     <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
-                                                    <td><?php echo number_format($order['total'] + 49, 2); ?></td>
+                                                    <td><?php echo number_format($order['total'] > 0 ? $order['total'] : 0  + 49, 2); ?></td>
                                                     <td>
                                                         <?php
                                                             $driver_id = $order['driver_id'];

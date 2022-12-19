@@ -33,7 +33,7 @@
                         $orderDate = date('Y-m-d');
                         $restaurant_id = 0;
 
-                        $customer_id = $_GET['customer_id'];
+                        $customer_id = $_GET['customer_id'] != null ? $_GET['customer_id'] : $_SESSION['id'];
                         $result = mysqli_query($link, "SELECT *
                                 FROM delivery_info WHERE customer_id = $customer_id");
                         $delivery_info = mysqli_fetch_array($result);
