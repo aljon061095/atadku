@@ -5,6 +5,36 @@ $food_list_sql = "SELECT * FROM food_list";
 $result = mysqli_query($link, $food_list_sql);
 $food_list = $result->fetch_all(MYSQLI_ASSOC);
 
+if (isset($_POST["ExportType"])) {
+    switch ($_POST["ExportType"]) {
+        case "export-to-excel":
+            // Submission from
+            $filename = "Restaurant" . ".xls";
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=\"$filename\"");
+            ExportFile($food_list);
+            exit();
+        default:
+            die("Unknown action : " . $_POST["action"]);
+            break;
+    }
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
+
 //adding food
 if (isset($_POST['save_food'])) {
     $restaurant = $_POST['restaurant'];
@@ -62,8 +92,19 @@ if (isset($_POST['save_food'])) {
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-food"></i> List of Foods</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#addFoodModal" class="btn fs-22 py-1 btn-success">Add Food</a>
+                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </button>
+                                </div>
+                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
+                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
+                                </form>
+                            </div>
                         </div>
-                        <a href="javascript:void(0);" data-toggle="modal" data-target="#addFoodModal" class="btn fs-22 py-1 btn-success">Add Food</a>
                     </div>
                 </div>
                 <!-- row -->
@@ -231,6 +272,23 @@ if (isset($_POST['save_food'])) {
 
         });
     </script>
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

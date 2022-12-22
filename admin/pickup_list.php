@@ -4,6 +4,36 @@ require_once "includes/config.php";
 $pickup_sql = "SELECT * FROM pickup";
 $result = mysqli_query($link, $pickup_sql);
 $pickup_list = $result->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST["ExportType"])) {
+    switch ($_POST["ExportType"]) {
+        case "export-to-excel":
+            // Submission from
+            $filename = "Restaurant" . ".xls";
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=\"$filename\"");
+            ExportFile($pickup_list);
+            exit();
+        default:
+            die("Unknown action : " . $_POST["action"]);
+            break;
+    }
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +60,17 @@ $pickup_list = $result->fetch_all(MYSQLI_ASSOC);
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-navigation"></i> Pickup List</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </button>
+                                </div>
+                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
+                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -156,6 +197,22 @@ $pickup_list = $result->fetch_all(MYSQLI_ASSOC);
     </div>
 
     <?php include 'includes/footer.php' ?>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
 
 </body>
 
