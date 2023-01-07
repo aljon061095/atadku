@@ -55,7 +55,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="reports.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/reports.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+                    <a href="driver_commission.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/user/driver_commission.php') { ?>active-nav <?php } ?>" aria-expanded="false">
                         <i class="mdi mdi-chart-bar-stacked"></i>
                         <span class="nav-text">Commission</span>
                     </a>

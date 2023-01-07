@@ -2,18 +2,23 @@
 //Include config file
 require_once "includes/config.php";
 
-$admin_commission_sql = "SELECT * FROM admin_commission";
-$result = mysqli_query($link, $admin_commission_sql);
-$admin_commission = $result->fetch_all(MYSQLI_ASSOC);
+//Initialize the session
+session_start();
+
+$driver_id =  $_SESSION["id"];
+
+$driver_commission_sql = "SELECT * FROM commission WHERE driver_id = '$driver_id'";
+$result = mysqli_query($link, $driver_commission_sql);
+$driver_commission = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
     switch ($_POST["ExportType"]) {
         case "export-to-excel":
             // Submission from
-            $filename = "commission_report" . ".xls";
+            $filename = "driver_commission_report" . ".xls";
             header("Content-Type: application/vnd.ms-excel");
             header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($admin_commission);
+            ExportFile($driver_commission);
             exit();
         default:
             die("Unknown action : " . $_POST["action"]);
@@ -57,7 +62,7 @@ function ExportFile($records) {
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Commission Report</h4>
+                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Driver Commission</h4>
                             <div class="col-md-12 float-right mb-4">
                                 <div class="btn-group pull-right">
                                     <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
@@ -84,7 +89,7 @@ function ExportFile($records) {
                                 <button class="btn btn-primary ml-2 mr-2" name="search">
                                     <span class="mdi mdi-keyboard-return"></span>
                                 </button>
-                                <a href="/atadku/admin/reports.php" type="button" class="btn btn-success">
+                                <a href="/atadku/driver_commission.php" type="button" class="btn btn-success">
                                     <span class="mdi mdi-refresh"><span>
                                 </a>
                             </form>
@@ -93,12 +98,12 @@ function ExportFile($records) {
                                 <table class="table table-bordered">
                                     <thead class="alert-info">
                                         <tr>
-                                            <th>Commission</th>
+                                            <th>Driver Commission</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php include 'range.php' ?>
+                                        <?php include 'driver_range.php' ?>
                                     </tbody>
                                 </table>
                             </div>

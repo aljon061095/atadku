@@ -1,14 +1,48 @@
-<?php 
-    //Include config file
-    require_once "includes/config.php";
+<?php
+//Include config file
+require_once "includes/config.php";
 
-    session_start();
+//Initialize the session
+session_start();
 
-    $owner_id =  $_SESSION["id"];
-    //owner
-    $result = mysqli_query($link, "SELECT SUM(sales) AS sales_sum FROM sales WHERE restaurant_id = '$owner_id'");
-    $row = mysqli_fetch_assoc($result);
-    $sales = $row['sales_sum'];
+$owner_id =  $_SESSION["id"];
+//owner
+// $result = mysqli_query($link, "SELECT SUM(sales) AS sales_sum FROM sales WHERE restaurant_id = '$owner_id'");
+// $row = mysqli_fetch_assoc($result);
+// $sales = $row['sales_sum'];
+
+$owner_sales_sql = "SELECT * FROM sales WHERE restaurant_id = '$owner_id'";
+$result = mysqli_query($link, $owner_sales_sql);
+$sales = $result->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST["ExportType"])) {
+    switch ($_POST["ExportType"]) {
+        case "export-to-excel":
+            // Submission from
+            $filename = "commission_report" . ".xls";
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment; filename=\"$filename\"");
+            ExportFile($sales);
+            exit();
+        default:
+            die("Unknown action : " . $_POST["action"]);
+            break;
+    }
+}
+
+function ExportFile($records) {
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,91 +51,88 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-<?php include 'includes/header.php'?>
+<?php include 'includes/header.php' ?>
 
 <body>
+    <?php include 'includes/preloader.php' ?>
 
-    <?php include 'includes/preloader.php'?>
     <div id="main-wrapper">
 
-        <?php include 'includes/topbar.php'?>
-        <?php include 'includes/sidebar.php'?>
+        <?php include 'includes/topbar.php' ?>
+        <?php include 'includes/sidebar.php' ?>
 
-        <div class="content-body">
+        <div class="content-body" style="margin-left: -5px; padding-top: 7rem;">
             <div class="container-fluid">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
-                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Reports </h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- row -->
-
-                <div class="row">
-                    <div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table table-bordered mytable"> 
-                              <thead>
-                                 <tr>
-                                     <th>Month</th>
-                                     <th>Sales</th>
-                                 </tr>
-                             </thead>
-                                    <tbody>
-                                       <tr>
-                                           <td>October</td>
-                                           <td>
-                                                <input class="monthly-sales" type="hidden" value="<?php echo $sales; ?>" />
-                                                <?php echo $sales; ?>
-                                            </td>
-                                       </tr>
-                                    </tbody>
-                                </table>
+                            <h4><i class="mdi mdi-chart-bar-stacked"></i> Sales Report</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </button>
+                                </div>
+                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
+                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-8 col-lg-8 col-xl-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <canvas id="bargraph" height="250"></canvas>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="col-md-12 well">
+                            <form class="form-inline" method="POST" action="">
+                                <label>From:</label>
+                                    <input type="date" class="form-control" placeholder="Start" name="date1" value="<?php echo isset($_POST['date1']) ? $_POST['date1'] : date('Y-m-d') ?>" />
+                                <label>To</label>
+                                    <input type="date" class="form-control" placeholder="End" name="date2" value="<?php echo isset($_POST['date2']) ? $_POST['date2'] : date('Y-m-d') ?>" />
+                                
+                                <button class="btn btn-primary ml-2 mr-2" name="search">
+                                    <span class="mdi mdi-keyboard-return"></span>
+                                </button>
+                                <a href="/atadku/admin/reports.php" type="button" class="btn btn-success">
+                                    <span class="mdi mdi-refresh"><span>
+                                </a>
+                            </form>
+                            <br /><br />
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="alert-info">
+                                        <tr>
+                                            <th>Sales</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php include 'range.php' ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-    <?php include 'includes/footer.php'?>
-    <script src="../js/chart.js"></script>
-    <script>
-        $monthlySales = $('.monthly-sales').val();
-        document.addEventListener("DOMContentLoaded", function () {
-            var barChartData = {
-                labels: ["October"],
-                datasets: [{
-                    label: 'Sales',
-                    backgroundColor: 'rgb(45,34,23)',
-                    borderColor: 'rgba(0, 158, 251, 1)',
-                    borderWidth: 1,
-                    data: [$monthlySales]
-                }]
-            };
 
-            var ctx = document.getElementById('bargraph').getContext('2d');
-            window.myBar = new Chart(ctx, {
-                type: 'bar',
-                data: barChartData,
-                options: {
-                    responsive: true,
-                    legend: {
-                        display: false,
-                    }
+    <?php include 'includes/footer.php' ?>
+    <script src="../js/chart.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
                 }
             });
-
         });
     </script>
 </body>

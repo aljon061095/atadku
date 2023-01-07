@@ -97,18 +97,45 @@ if (isset($_POST['save_online_payment'])) {
                     <div class="col-md-12 mt-4">
                         <h3>Order Summary</h3>
                         <div class="row">
-                            <div class="col-md-4">
-                                <p><strong>Items Amount:</strong>: ₱ <?php echo number_format($orderTotal, 2); ?></p>
-                                
+                            <div class="col-md-6">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Item</th>
+                                            <th scope="col">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($_SESSION["cart"] as $keys => $values) { ?>
+                                            <tr>
+                                                <td><?php echo $values['quantity']; ?></td>
+                                                <td><?php echo $values['name']; ?></td>
+                                                <td>₱  <?php echo number_format($values["quantity"] * $values["price"], 2); ?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+
+                                <?php
+                                    $itemVat = $orderTotal * 0.12;
+                                ?>
+
+                                <p><strong>VATable Sales:</strong> ₱ <?php echo number_format($orderTotal - $itemVat, 2); ?></p>
+                                <p><strong>VAT Amount:</strong> ₱ <?php echo number_format($itemVat, 2); ?></p>
+                                <p><strong>Total Amount:</strong> ₱ <?php echo number_format($orderTotal, 2); ?></p>
+
                                 <?php
                                     $result = mysqli_query($link, "SELECT *
-                                                FROM settings WHERE owner_id = $restaurant_id");
+                                                    FROM settings WHERE owner_id = $restaurant_id");
                                     $delivery_charge = mysqli_fetch_array($result);
+                                    $charge = isset($delivery_charge) ? number_format($delivery_charge['delivery_charge'], 2) : number_format(49, 2);
                                 ?>
-                                <p><strong>Delivery Fee</strong>: ₱ <?php echo isset($delivery_charge) ? number_format($delivery_charge['delivery_charge'], 2) : number_format(49, 2) ; ?></p>
-                                <p><strong>Total</strong>: ₱ <?php echo number_format($orderTotal + 49, 2); ?></p>
-                            </div>
-                            <div class="col-md-8">
+                                <p><strong>Delivery Fee</strong>: ₱ <?php echo isset($delivery_charge) ? number_format($delivery_charge['delivery_charge'], 2) : number_format(49, 2); ?></p>
+                                <p><strong>Total</strong>: ₱ <?php echo number_format($orderTotal + $charge, 2); ?></p>
+                                <p><strong>Date Order:</strong> <?php echo date("m/d/Y h:ia"); ?></p>
+                            </div>  
+                            <div class="col-md-6">
                                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                                     <input type="hidden" class="form-control" name="customer_id" value="<?php echo $customer['id']; ?>" id="customer_id">
                                     <div class="form-check">
@@ -148,7 +175,7 @@ if (isset($_POST['save_online_payment'])) {
                                 <a style="text-decoration: none;" href="cart.php">
                                     <button class="btn btn-secondary">Back to Cart</button>
                                 </a>
-                                <a style="text-decoration: none;" href="process_order.php?order_id=<?php echo $orderNumber; ?>&customer_id=<?php echo $customer['id'];?>">
+                                <a style="text-decoration: none;" href="process_order.php?order_id=<?php echo $orderNumber; ?>&customer_id=<?php echo $customer['id']; ?>">
                                     <button class="btn btn-primary">Place Order</button>
                                 </a>
                             </div>
@@ -207,12 +234,11 @@ if (isset($_POST['save_online_payment'])) {
         $('input[type=radio][name=payment_method]').change(function() {
             if (this.value == 'online_payment') {
                 $("#gcash_account").removeClass('hidden');
-            }
-            else {
+            } else {
                 $("#gcash_account").addClass('hidden');
             }
         });
-    </script>                
+    </script>
 
 
     <!-- Required vendors -->

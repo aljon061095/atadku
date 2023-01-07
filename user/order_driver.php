@@ -9,6 +9,36 @@
     $orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id";
     $result = mysqli_query($link, $orders_sql);
     $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+    if (isset($_POST["ExportType"])) {
+        switch ($_POST["ExportType"]) {
+            case "export-to-excel":
+                // Submission from
+                $filename = "Restaurant" . ".xls";
+                header("Content-Type: application/vnd.ms-excel");
+                header("Content-Disposition: attachment; filename=\"$filename\"");
+                ExportFile($orders);
+                exit();
+            default:
+                die("Unknown action : " . $_POST["action"]);
+                break;
+        }
+    }
+    
+    function ExportFile($records)
+    {
+        $heading = false;
+        if (!empty($records))
+            foreach ($records as $row) {
+                if (!$heading) {
+                    // display field/column names as a first row
+                    echo implode("\t", array_keys($row)) . "\n";
+                    $heading = true;
+                }
+                echo implode("\t", array_values($row)) . "\n";
+            }
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +62,17 @@
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-cart-plus"></i> Delivery List</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </button>
+                                </div>
+                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
+                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,7 +112,7 @@
                                                         ?>
                                                         <?php echo $row['full_name']; ?>
                                                     </td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
+                                                    <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
                                                     <td><?php echo number_format($order['price'] + 49, 2); ?></td>
@@ -109,6 +150,21 @@
 
     <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php'?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
 
 </body>
 

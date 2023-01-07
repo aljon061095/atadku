@@ -112,7 +112,7 @@ function ExportFile($records)
                                                     </td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
+                                                    <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo number_format($order['total'] > 0 ? $order['total'] : 0  + 49, 2); ?></td>
                                                     <td>
                                                         <?php

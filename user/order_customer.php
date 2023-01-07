@@ -71,7 +71,7 @@
                                                         ?>
                                                         <?php echo $row['full_name']; ?>
                                                     </td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
+                                                    <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
                                                     <td><?php echo number_format($order['total'] != null ?  $order['total'] : 0 + 49, 2); ?></td>
