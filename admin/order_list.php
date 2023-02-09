@@ -6,18 +6,21 @@ $result = mysqli_query($link, $order_sql);
 $order_list = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
-    switch ($_POST["ExportType"]) {
-        case "export-to-excel":
-            // Submission from
-            $filename = "Restaurant" . ".xls";
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($order_list);
-            exit();
-        default:
-            die("Unknown action : " . $_POST["action"]);
-            break;
-    }
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM orders where date_created between '".$from_date."' 
+            and '".$to_date."' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $order_list = $result->fetch_all(MYSQLI_ASSOC);
+    } 
+    
+    $filename = "Order_List" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($order_list);
+    exit();
 }
 
 function ExportFile($records)
@@ -62,14 +65,11 @@ function ExportFile($records)
                             <h4><i class="mdi mdi-navigation"></i> Order List</h4>
                             <div class="col-md-12 float-right mb-4">
                                 <div class="btn-group pull-right">
-                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
                                         <i class="mdi mdi-download"></i>
                                         Export
-                                    </button>
+                                    </a>
                                 </div>
-                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
-                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -205,7 +205,8 @@ function ExportFile($records)
             </div>
         </div>
     </div>
-
+    
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/footer.php' ?>
     <script type="text/javascript">
         $(document).ready(function() {

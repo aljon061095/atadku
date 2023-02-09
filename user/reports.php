@@ -93,7 +93,7 @@ function ExportFile($records) {
                                 <button class="btn btn-primary ml-2 mr-2" name="search">
                                     <span class="mdi mdi-keyboard-return"></span>
                                 </button>
-                                <a href="/atadku/admin/reports.php" type="button" class="btn btn-success">
+                                <a href="/atadku/user/reports.php" type="button" class="btn btn-success">
                                     <span class="mdi mdi-refresh"><span>
                                 </a>
                             </form>

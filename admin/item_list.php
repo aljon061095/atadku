@@ -6,18 +6,21 @@ $result = mysqli_query($link, $item_list_sql);
 $item_list = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
-    switch ($_POST["ExportType"]) {
-        case "export-to-excel":
-            // Submission from
-            $filename = "Restaurant" . ".xls";
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($item_list);
-            exit();
-        default:
-            die("Unknown action : " . $_POST["action"]);
-            break;
-    }
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM item_list where date_added between '".$from_date."' 
+            and '".$to_date."' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $item_list = $result->fetch_all(MYSQLI_ASSOC);
+    } 
+    
+    $filename = "Item_List" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($item_list);
+    exit();
 }
 
 function ExportFile($records)
@@ -96,21 +99,16 @@ if (isset($_POST['save_item'])) {
                             <div class="col-md-12 float-right mb-4">
                                 <div class="btn-group pull-right">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#addStoreModal" class="btn fs-22 py-1 btn-success">Add Item</a>
-                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
                                         <i class="mdi mdi-download"></i>
                                         Export
-                                    </button>
+                                    </a>
                                 </div>
-                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
-                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
-                                </form>
-                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
                 <!-- row -->
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -234,6 +232,8 @@ if (isset($_POST['save_item'])) {
             </div>
         </div>
     </div>
+
+    <?php include 'export_modal.php' ?>
 
     <?php include 'includes/footer.php' ?>
     <script>

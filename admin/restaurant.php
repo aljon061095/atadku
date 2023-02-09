@@ -6,18 +6,21 @@ $result = mysqli_query($link, $resturant_sql);
 $restaurants = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
-    switch ($_POST["ExportType"]) {
-        case "export-to-excel":
-            // Submission from
-            $filename = "Restaurant" . ".xls";
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($restaurants);
-            exit();
-        default:
-            die("Unknown action : " . $_POST["action"]);
-            break;
-    }
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM restaurant where date_created between '".$from_date."' 
+            and '".$to_date."' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $restaurants = $result->fetch_all(MYSQLI_ASSOC);
+    } 
+    
+    $filename = "Restaurant" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($restaurants);
+    exit();
 }
 
 function ExportFile($records)
@@ -97,14 +100,11 @@ if (isset($_POST['save_restaurant'])) {
                             <div class="col-md-12 float-right mb-4">
                                 <div class="btn-group pull-right">
                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#addRestaurantModal" class="btn fs-22 py-1 btn-success">Add Restaurant</a>
-                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
                                         <i class="mdi mdi-download"></i>
                                         Export
-                                    </button>
+                                    </a>
                                 </div>
-                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
-                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -122,6 +122,14 @@ if (isset($_POST['save_restaurant'])) {
                     }
                     ?>
                 </div>
+
+                <div class="row blocked-message hidden">
+                    <div class="alert alert-danger alert-dismissable">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        The restaurant has been blocked or suspended.
+                    </div>
+                </div>
+
                 <!-- row -->
                 <div class="row">
                     <div class="col-12">
@@ -159,6 +167,7 @@ if (isset($_POST['save_restaurant'])) {
                                                     <td>
                                                         <div class="d-flex">
                                                             <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil" data-toggle="modal" data-target="#update_restaurant_modal<?php echo $restaurant['id'] ?>"></i></button>
+                                                            <button type="button" class="btn btn-warning shadow btn-xs sharp p-0 mr-1 block" data-id="<?php echo $store['id']; ?>" title="Block" data-table-name="restaurant"><i class="mdi mdi-block-helper"></i></button>
                                                             <button type="button" class="btn btn-danger shadow btn-xs sharp p-0 delete" data-id="<?php echo $restaurant['id']; ?>" data-table-name="restaurant"><i class="mdi mdi-eraser"></i></button>
                                                         </div>
                                                     </td>
@@ -239,6 +248,8 @@ if (isset($_POST['save_restaurant'])) {
         </div>
     </div>
 
+    <?php include 'export_modal.php' ?>
+
     <?php include 'includes/footer.php' ?>
     <script>
         $(document).ready(function() {
@@ -270,6 +281,37 @@ if (isset($_POST['save_restaurant'])) {
                                 $('.deleted-message').removeClass('hidden');
                             }
 
+                        }
+                    });
+                }
+
+            });
+
+        });
+
+        $(document).ready(function() {
+            // Delete 
+            $('.block').click(function() {
+                var el = this;
+
+                var deleteId = $(this).data('id');
+                var tableName = $(this).data('table-name');
+
+                var confirmalert = confirm("Are you sure you want to block this store?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'block.php',
+                        type: 'POST',
+                        data: {
+                            id: deleteId,
+                            tableName: tableName
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                // Remove row from HTML Table
+                                $('.blocked-message').removeClass('hidden');
+                            }
                         }
                     });
                 }

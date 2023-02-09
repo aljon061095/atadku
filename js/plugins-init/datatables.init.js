@@ -91,7 +91,9 @@ let dataSet = [
     });
 	
 	// 
-	var table = $('#example3, #example4, #example5').DataTable();
+    // $('#restaurant_table, #store, #item_list', '#pickup_list', '#order_list', '#food_list', '#customer_list', '#driver').DataTable();
+	
+    var table = $('#example3, #example4, #example5, #restaurant_table').DataTable();
 	$('#example tbody').on('click', 'tr', function () {
 		var data = table.row( this ).data();
 	});

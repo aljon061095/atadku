@@ -56,6 +56,12 @@
 				</a>
 			</li>
 			<li>
+				<a href="archives.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/archives.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+					<i class="mdi mdi-archive"></i>
+					<span class="nav-text">Archives</span>
+				</a>
+			</li>
+			<li>
 				<a href="feedback.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/feedback.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-comment-text-multiple-outline"></i>
 					<span class="nav-text">Feedbacks</span>
