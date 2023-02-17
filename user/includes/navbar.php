@@ -11,7 +11,7 @@
 ?>
 
 <div class="nav-header">
-    <a href="index.php" class="brand-logo">
+    <a href="stores.php" class="brand-logo">
         <img src="../images/avatar/logo_main.png" alt="" width="100">
     </a>
 </div>

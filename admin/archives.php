@@ -1,17 +1,13 @@
 <?php
 require_once "includes/config.php";
 
-$store_sql = "SELECT * FROM store WHERE is_deleted = 1";
+$store_sql = "SELECT * FROM user_list WHERE (user_type = 'restaurant' || user_type = 'store') && is_deleted = 1";
 $result = mysqli_query($link, $store_sql);
 $stores = $result->fetch_all(MYSQLI_ASSOC);
 
-$resturant_sql = "SELECT * FROM restaurant WHERE is_deleted = 1";
-$result = mysqli_query($link, $resturant_sql);
-$restaurants = $result->fetch_all(MYSQLI_ASSOC);
-
-$item_list_sql = "SELECT * FROM item_list WHERE is_deleted = 1";
-$result = mysqli_query($link, $item_list_sql);
-$item_list = $result->fetch_all(MYSQLI_ASSOC);
+$product_list_sql = "SELECT * FROM product_list WHERE is_deleted = 1";
+$result = mysqli_query($link, $product_list_sql);
+$product_list = $result->fetch_all(MYSQLI_ASSOC);
 
 $pickup_sql = "SELECT * FROM pickup WHERE is_deleted = 1";
 $result = mysqli_query($link, $pickup_sql);
@@ -20,10 +16,6 @@ $pickup_list = $result->fetch_all(MYSQLI_ASSOC);
 $order_sql = "SELECT * FROM orders WHERE is_deleted = 1";
 $result = mysqli_query($link, $order_sql);
 $order_list = $result->fetch_all(MYSQLI_ASSOC);
-
-$food_list_sql = "SELECT * FROM food_list WHERE is_deleted = 1";
-$result = mysqli_query($link, $food_list_sql);
-$food_list = $result->fetch_all(MYSQLI_ASSOC);
 
 $customer_sql = "SELECT * FROM customer WHERE is_deleted = 1";
 $result = mysqli_query($link, $customer_sql);
@@ -77,17 +69,13 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <!-- row -->
                 <ul class="nav nav-tabs">
-                    <li class="nav-item"><a href="#restaurant_tab" data-toggle="tab" class="nav-link active show">Restaurant</a>
+                    <li class="nav-item"><a href="#store_tab" data-toggle="tab" class="nav-link active show">Stores</a>
                     </li>
-                    <li class="nav-item"><a href="#store_tab" data-toggle="tab" class="nav-link ">Store</a>
-                    </li>
-                    <li class="nav-item"><a href="#item_list_tab" data-toggle="tab" class="nav-link">Item List</a>
+                    <li class="nav-item"><a href="#product_list_tab" data-toggle="tab" class="nav-link">Product List</a>
                     </li>
                     <li class="nav-item"><a href="#pickup_list_tab" data-toggle="tab" class="nav-link">Pickup List</a>
                     </li>
                     <li class="nav-item"><a href="#order_list_tab" data-toggle="tab" class="nav-link">Order List</a>
-                    </li>
-                    <li class="nav-item"><a href="#food_list_tab" data-toggle="tab" class="nav-link">Food List</a>
                     </li>
                     <li class="nav-item"><a href="#customer_list_tab" data-toggle="tab" class="nav-link">Customer List</a>
                     </li>
@@ -95,56 +83,7 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                     </li>
                 </ul>
                 <div class="tab-content mt-4">
-                    <div id="restaurant_tab" class="tab-pane fade active show">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table id="restaurant_table" class="display" style="min-width: 845px">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Restaurant</th>
-                                                        <th>Logo</th>
-                                                        <th>Owner Name</th>
-                                                        <th>TIN</th>
-                                                        <th>Address</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($restaurants as $restaurant) {
-                                                        $logo = $restaurant['logo'];
-                                                    ?>
-                                                        <tr>
-                                                            <td><?php echo $restaurant['name']; ?></td>
-                                                            <td><img class="img-fluid" src=<?php echo "../uploads/$logo" ?> alt=""></td>
-                                                            <td><?php echo $restaurant['owner_name']; ?></td>
-                                                            <td><?php echo $restaurant['tin']; ?></td>
-                                                            <td><?php echo $restaurant['address']; ?></td>
-                                                            <td>
-                                                                <span class="badge light badge-success">
-                                                                    <i class="fa fa-circle text-success mr-1"></i>
-                                                                    active
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <div class="d-flex">
-                                                                    <button type="button" class="btn btn-success restore" data-id="<?php echo $restaurant['id']; ?>" title="Restore" data-table-name="restaurant">Restore</button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="store_tab" class="tab-pane fade">
+                    <div id="store_tab" class="tab-pane fade active show">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -163,10 +102,10 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($stores as $store) {
-                                                        $logo = $store['logo'];
+                                                        $logo = $store['profile'];
                                                     ?>
                                                         <tr>
-                                                            <td><?php echo $store['name']; ?></td>
+                                                            <td><?php echo $store['full_name']; ?></td>
                                                             <td><img class="img-fluid" src=<?php echo "../uploads/$logo" ?> alt=""></td>
                                                             <td><?php echo $store['owner_name']; ?></td>
                                                             <td><?php echo $store['tin']; ?></td>
@@ -186,7 +125,7 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                             </div>
                         </div>
                     </div>
-                    <div id="item_list_tab" class="tab-pane fade">
+                    <div id="product_list_tab" class="tab-pane fade">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -204,7 +143,7 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php foreach ($item_list as $item) {
+                                                    <?php foreach ($product_list as $item) {
                                                         $image = $item['images'];
                                                     ?>
                                                         <tr>
@@ -346,56 +285,6 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="food_list_tab" class="tab-pane fade">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table id="food_list_table" class="display" style="min-width: 845px">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Restaurant</th>
-                                                        <th>Food Name</th>
-                                                        <th>Price</th>
-                                                        <th>Image</th>
-                                                        <th>Description</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($food_list as $food) {
-                                                        $image = $food['images'];
-                                                    ?>
-                                                        <tr>
-                                                            <td>
-                                                                <?php
-                                                                $restaurant_id = $food['restaurant_id'];
-                                                                $result = mysqli_query($link, "SELECT *
-                                                                FROM restaurant WHERE id = $restaurant_id");
-                                                                $row = mysqli_fetch_array($result);
-                                                                ?>
-                                                                <?php echo $row['name']; ?>
-                                                            </td>
-                                                            <td><?php echo $food['food_name']; ?></td>
-                                                            <td><?php echo number_format((float)$food['price'], 2, '.', ''); ?></td>
-                                                            <td><img class="img-fluid" src=<?php echo "../uploads/$image" ?> alt=""></td>
-                                                            <td><?php echo $food['description']; ?></td>
-                                                            <td>
-                                                                <div class="d-flex">
-                                                                    <button type="button" class="btn btn-success restore" data-id="<?php echo $food['id']; ?>" title="Restore" data-table-name="item_list">Restore</button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    <?php  } ?>
                                                 </tbody>
                                             </table>
                                         </div>

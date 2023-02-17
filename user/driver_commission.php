@@ -12,18 +12,21 @@ $result = mysqli_query($link, $driver_commission_sql);
 $driver_commission = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
-    switch ($_POST["ExportType"]) {
-        case "export-to-excel":
-            // Submission from
-            $filename = "driver_commission_report" . ".xls";
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($driver_commission);
-            exit();
-        default:
-            die("Unknown action : " . $_POST["action"]);
-            break;
-    }
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+    $from_date = $_POST['from_date'];
+    $to_date = $_POST['to_date'];
+
+    $query = "SELECT * FROM sales where restaurant_id = '$owner_id' && date_added between '" . $from_date . "' 
+    and '" . $to_date . "' ORDER BY id asc";
+    $result = mysqli_query($link, $query);
+    $sales = $result->fetch_all(MYSQLI_ASSOC);
+}
+
+    $filename = "Product" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($sales);
+    exit();
 }
 
 function ExportFile($records) {

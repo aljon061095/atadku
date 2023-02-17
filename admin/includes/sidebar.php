@@ -8,6 +8,12 @@
 				</a>
 			</li>
 			<li>
+				<a href="stores.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/stores.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+					<i class="mdi mdi-home"></i>
+					<span class="nav-text">Stores</span>
+				</a>
+			</li>
+			<!-- <li>
 				<a href="restaurant.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/restaurant.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-office-building"></i>
 					<span class="nav-text">Restaurant</span>
@@ -18,13 +24,19 @@
 					<i class="mdi mdi-home"></i>
 					<span class="nav-text">Store</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
+				<a href="product_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/product_list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
+					<i class="mdi mdi-gift"></i>
+					<span class="nav-text">Product List</span>
+				</a>
+			</li>
+			<!-- <li>
 				<a href="item_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/item_list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-gift"></i>
 					<span class="nav-text">Item List</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
 				<a href="pickup_list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/pickup_list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-navigation"></i>
@@ -37,12 +49,12 @@
 					<span class="nav-text">Order List</span>
 				</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a href="food-list.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/food-list.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-food"></i>
 					<span class="nav-text">Food List</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
 				<a href="customers.php" class="ai-icon <?php if ($_SERVER['PHP_SELF'] == '/atadku/admin/customers.php') { ?>active-nav <?php } ?>" aria-expanded="false">
 					<i class="mdi mdi-account-multiple"></i>

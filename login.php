@@ -47,7 +47,7 @@ if (isset($_POST['login'])) {
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT id, profile, username, password, user_type FROM users WHERE username = ?";
+        $sql = "SELECT id, profile, username, password, user_type FROM user_list WHERE username = ?";
 
         if ($stmt = $link->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
@@ -80,8 +80,19 @@ if (isset($_POST['login'])) {
                             $_SESSION["profile"] = $profile;
                             $_SESSION["user"] = $user_type;
 
-                            // Redirect user to welcome page
-                            header("location: user/index.php");
+                            if ($user_type === "customer") {
+                                // Redirect user to welcome page
+                                header("location: user/stores.php");
+                            } else if ($user_type === "driver") {
+                                // Redirect user to welcome page
+                                header("location: user/dashboard.php");
+                            } else if ($user_type === "owner") {
+                                // Redirect user to welcome page
+                                header("location: user/dashboard.php");
+                            }  else {
+                                // Redirect user to welcome page
+                                header("location: user/index.php");
+                            }
                         } else {
                             // Password is not valid, display a generic error message
                             $_SESSION['login_err'] = "Invalid username or password.";
@@ -353,14 +364,6 @@ if (isset($_POST['login_owner'])) {
                                 <h4 class="text-center mb-4">Login in your account</h4>
                                 <div class="profile-tab">
                                     <div class="custom-tab-1">
-                                        <!-- <ul class="nav nav-tabs">
-                                            <li class="nav-item"><a href="#customer" data-toggle="tab" class="nav-link active show">Customer</a>
-                                            </li>
-                                            <li class="nav-item"><a href="#owner" data-toggle="tab" class="nav-link">Owner</a>
-                                            </li>
-                                            <li class="nav-item"><a href="#driver" data-toggle="tab" class="nav-link">Driver</a>
-                                            </li>
-                                        </ul> -->
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <?php
@@ -393,89 +396,8 @@ if (isset($_POST['login_owner'])) {
                                                 <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
                                             </div>
                                         </form>
-                                        <!-- <div class="tab-content mt-4">
-                                            <div class="row">
-                                                <?php
-                                                if (isset($_SESSION['login_err'])) {
-                                                ?>
-                                                        <div class="alert alert-danger alert-dismissable">
-                                                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                                            <?php echo $_SESSION['login_err']; ?>
-                                                        </div>
-                                                    <?php
-                                                    unset($_SESSION['login_err']);
-                                                }
-                                                    ?>
-                                            </div>
-                                            <div id="customer" class="tab-pane fade active show">
-                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
-                                                            <label for="floatingInput">Username</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                                            <label for="floatingPassword">Password</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <button type="submit" name="login_customer" class="btn btn-primary btn-block">Login</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div id="owner" class="tab-pane fade">
-                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input mt-2" type="radio" name="type" value="restaurant" checked>
-                                                            <label class="form-check-label">Restaurant</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input mt-2" type="radio" name="type" value="store">
-                                                            <label class="form-check-label">Store</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" name="username" id="floatingInput" placeholder="username">
-                                                            <label for="username">Username</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                                            <label for="floatingPassword">Password</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <input type="submit" name="login_owner" class="btn btn-primary btn-user btn-block" value="Login">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div id="driver" class="tab-pane fade">
-                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" name="username" id="floatingInput" placeholder="username">
-                                                            <label for="username">Username</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                                            <label for="floatingPassword">Password</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <button type="submit" name="login_driver" class="btn btn-primary btn-block">Login</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div> -->
                                         <div class="new-account mt-3 text-center">
+                                            <p><a class="text-primary" href="forgot_password.php">Forgot Password?</a></p>
                                             <p>Don't have an account? <a class="text-primary" href="register.php">Sign up</a></p>
                                             <div class="form-group">
                                                 <a href="index.php" class="btn btn-secondary h-50">Back to Homepage</a>

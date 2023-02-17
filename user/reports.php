@@ -6,28 +6,26 @@ require_once "includes/config.php";
 session_start();
 
 $owner_id =  $_SESSION["id"];
-//owner
-// $result = mysqli_query($link, "SELECT SUM(sales) AS sales_sum FROM sales WHERE restaurant_id = '$owner_id'");
-// $row = mysqli_fetch_assoc($result);
-// $sales = $row['sales_sum'];
-
 $owner_sales_sql = "SELECT * FROM sales WHERE restaurant_id = '$owner_id'";
 $result = mysqli_query($link, $owner_sales_sql);
 $sales = $result->fetch_all(MYSQLI_ASSOC);
 
 if (isset($_POST["ExportType"])) {
-    switch ($_POST["ExportType"]) {
-        case "export-to-excel":
-            // Submission from
-            $filename = "commission_report" . ".xls";
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            ExportFile($sales);
-            exit();
-        default:
-            die("Unknown action : " . $_POST["action"]);
-            break;
+        if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM sales where restaurant_id = '$owner_id' && date_added between '" . $from_date . "' 
+        and '" . $to_date . "' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $sales = $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    $filename = "Product" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($sales);
+    exit();
 }
 
 function ExportFile($records) {
@@ -69,14 +67,11 @@ function ExportFile($records) {
                             <h4><i class="mdi mdi-chart-bar-stacked"></i> Sales Report</h4>
                             <div class="col-md-12 float-right mb-4">
                                 <div class="btn-group pull-right">
-                                    <button type="button" class="btn fs-22 py-1 btn-info ml-2" id="export-to-excel">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
                                         <i class="mdi mdi-download"></i>
                                         Export
-                                    </button>
+                                    </a>
                                 </div>
-                                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="export-form">
-                                    <input type="hidden" value='' id='hidden-type' name='ExportType' />
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -118,8 +113,10 @@ function ExportFile($records) {
         </div>
     </div>
 
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/footer.php' ?>
     <script src="../js/chart.js"></script>
+    
     <script type="text/javascript">
         $(document).ready(function() {
             jQuery('button').on("click", function() {

@@ -8,7 +8,7 @@ session_start();
 $restaurant_id = $_GET["restaurant_id"];;
 
 $customer_id = $_SESSION["id"];;
-$customer_sql = "SELECT * FROM customer WHERE id = $customer_id";
+$customer_sql = "SELECT * FROM user_list WHERE id = $customer_id";
 $result = mysqli_query($link, $customer_sql);
 $customer = $result->fetch_array(MYSQLI_ASSOC);
 

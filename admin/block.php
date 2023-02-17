@@ -4,6 +4,9 @@
     //Delete
     $id = 0;
     $tableName = $_POST['tableName'];
+    $actionName = $_POST['actionName'];
+
+    $status = $actionName === "activated" ? 0 : 1;
     
     if (isset($_POST['id'])) {
         $id = mysqli_real_escape_string($link, $_POST['id']);
@@ -15,8 +18,8 @@
         $totalrows = mysqli_num_rows($checkRecord);
 
         if ($totalrows > 0) {
-            // Delete item record
-            $query = "UPDATE $tableName SET is_blocked = 1 WHERE id=" . $id;
+            // Update item record
+            $query = "UPDATE $tableName SET is_blocked = $status WHERE id=" . $id;
             mysqli_query($link, $query);
             echo 1;
             exit;
