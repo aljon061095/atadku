@@ -1,7 +1,7 @@
 <?php
 require_once "includes/config.php";
 
-$store_sql = "SELECT * FROM user_list WHERE (user_type = 'restaurant' || user_type = 'store') && is_deleted = 1";
+$store_sql = "SELECT * FROM user_list WHERE (user_type = 'owner') && is_deleted = 1";
 $result = mysqli_query($link, $store_sql);
 $stores = $result->fetch_all(MYSQLI_ASSOC);
 
@@ -112,7 +112,7 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                                                             <td><?php echo $store['address']; ?></td>
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    <button type="button" class="btn btn-success restore" data-id="<?php echo $store['id']; ?>" title="Restore" data-table-name="store">Restore</button>
+                                                                    <button type="button" class="btn btn-success restore" data-id="<?php echo $store['id']; ?>" title="Restore" data-table-name="user_list">Restore</button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -527,6 +527,45 @@ $drivers = $result->fetch_all(MYSQLI_ASSOC);
                 });
 
             });
+
+            $(document).ready(function() {
+                // Delete 
+                $('.restore').click(function() {
+                    var el = this;
+
+                    var deleteId = $(this).data('id');
+                    var tableName = $(this).data('table-name');
+
+                    var confirmalert = confirm("Are you sure you want to restore this store?");
+                    if (confirmalert == true) {
+                        // AJAX Request
+                        $.ajax({
+                            url: 'restore.php',
+                            type: 'POST',
+                            data: {
+                                id: deleteId,
+                                tableName: tableName
+                            },
+                            success: function(response) {
+                                if (response == 1) {
+                                    // Remove row from HTML Table
+                                    $(el).closest('tr').css('background', 'tomato');
+                                    $(el).closest('tr').fadeOut(800, function() {
+                                        $(this).remove();
+                                    });
+
+                                    $('.deleted-message').removeClass('hidden');
+                                }
+
+                            }
+                        });
+                    }
+
+                });
+
+            });
+
+            
         </script>
 
         <script type="text/javascript">

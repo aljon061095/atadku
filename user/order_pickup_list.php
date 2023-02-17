@@ -188,7 +188,7 @@ if (isset($_POST['accept_pickup'])) {
                                                                     <?php
                                                                     $customer_id = $order['customer_id'];
                                                                     $result = mysqli_query($link, "SELECT *
-                                                                  FROM customer WHERE id = $customer_id");
+                                                                        FROM user_list WHERE id = $customer_id");
                                                                     $customer = mysqli_fetch_array($result);
                                                                     ?>
                                                                     <span class="card-text"><?php echo $customer['full_name']; ?></span><br />

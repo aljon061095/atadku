@@ -21,7 +21,7 @@ if (isset($_POST['forgot_password'])) {
     if ($totalrows > 0) {
         $password = password_hash($temp_password, PASSWORD_DEFAULT);
         // Update the password
-        $query = "UPDATE user_list SET password = '$password' WHERE email_address=" . $email_address;
+        $query = "UPDATE user_list SET password = '$password' WHERE (email_address='$email_address')";
         $query_result = mysqli_query($link, $query);
 
         //send email
@@ -38,14 +38,14 @@ if (isset($_POST['forgot_password'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'systemspluscollegefoundation1@gmail.com';
-            $mail->Password = 'ieiiabmkltvdntsg'; //   ieiiabmkltvdntsgieiiabmkltvdntsgieiiabmkltvdntsg  bermzwhiteknight8       
+            $mail->Username = 'atadku.deliverysystem@gmail.com';
+            $mail->Password = 'gbxmqmuhhdupndri'; //   ieiiabmkltvdntsgieiiabmkltvdntsgieiiabmkltvdntsg  bermzwhiteknight8       
 
             $mail->SMTPSecure = 'ssl';
             $mail->Port = 465;
 
             //Send Email
-            $mail->setFrom('systemspluscollegefoundation1@gmail.com', 'ATADKU');
+            $mail->setFrom('atadku.deliverysystem@gmail.com', 'ATADKU');
 
 
             $query1 = "SELECT * FROM user_list ORDER BY id DESC LIMIT 1";
@@ -58,7 +58,7 @@ if (isset($_POST['forgot_password'])) {
 
                     //Recipients
                     $mail->addAddress($email_address);
-                    $mail->addReplyTo('systemspluscollegefoundation1@gmail.com');
+                    $mail->addReplyTo('atadku.deliverysystem@gmail.com');
 
                     //Content
                     $mail->isHTML(true);
@@ -77,7 +77,7 @@ if (isset($_POST['forgot_password'])) {
                     $_SESSION['status'] = 'error';
 
                     $_SESSION['success_status'] = "You have successfully forgot the password.";
-                    header("location: login.php");
+                    header("location: forgot_password.php");
                 }
             }
         }
@@ -119,6 +119,19 @@ if (isset($_POST['forgot_password'])) {
                                                 }
                                                 ?>
                                             </div>
+                                            <div class="col-lg-12">
+                                                <?php
+                                                if (isset($_SESSION['success_status'])) {
+                                                ?>
+                                                    <div class="alert alert-success alert-dismissable">
+                                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                        <?php echo $_SESSION['success_status']; ?>
+                                                    </div>
+                                                <?php
+                                                    unset($_SESSION['success_status']);
+                                                }
+                                                ?>
+                                            </div>
                                         </div>
                                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                                             <div class="form-group">
@@ -128,7 +141,7 @@ if (isset($_POST['forgot_password'])) {
                                                 </div>
                                             </div>
                                             <div class="text-center">
-                                                <button type="submit" name="forgot_password" class="btn btn-primary btn-block">Login</button>
+                                                <button type="submit" name="forgot_password" class="btn btn-primary btn-block">Forgot Password</button>
                                             </div>
                                         </form>
                                         <div class="new-account mt-3 text-center">

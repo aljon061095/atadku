@@ -129,6 +129,12 @@ if (isset($_POST['save_store'])) {
                         The store has been blocked or suspended.
                     </div>
                 </div>
+                <div class="row forgot-password-message hidden">
+                    <div class="alert alert-danger alert-dismissable">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        The store successfully updated password.
+                    </div>
+                </div>
                 <!-- row -->
                 <div class="row">
                     <div class="col-12">
@@ -174,10 +180,11 @@ if (isset($_POST['save_store'])) {
                                                         <div class="d-flex">
                                                             <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1 p-0"><i class="mdi mdi-pencil" data-toggle="modal" data-target="#update_store_modal<?php echo $store['id'] ?>"></i></button>
                                                             <?php if ($store['is_blocked'] == 1) { ?>
-                                                                <button type="button" class="btn btn-success shadow btn-xs sharp p-0 mr-1 block" data-id="<?php echo $store['id']; ?>" title="Block" data-action-name="activated" data-table-name="user_list"><i class="mdi mdi-check"></i></button>
+                                                                <button type="button" class="btn btn-success shadow btn-xs sharp p-0 mr-1 block" data-id="<?php echo $store['id']; ?>" title="Activated" data-action-name="activated" data-table-name="user_list"><i class="mdi mdi-check"></i></button>
                                                             <?php } else { ?>
-                                                                <button type="button" class="btn btn-warning shadow btn-xs sharp p-0 mr-1 block" data-id="<?php echo $store['id']; ?>" title="Activated" data-action-name="block" data-table-name="user_list"><i class="mdi mdi-block-helper"></i></button>
+                                                                <button type="button" class="btn btn-warning shadow btn-xs sharp p-0 mr-1 block" data-id="<?php echo $store['id']; ?>" title="Block" data-action-name="block" data-table-name="user_list"><i class="mdi mdi-block-helper"></i></button>
                                                             <?php } ?>
+                                                            <button type="button" class="btn btn-warning shadow btn-xs sharp forgot-password mr-1" title="Forgot Password" data-email-address="<?php echo $store['email_address']; ?>" data-id="<?php echo $store['id']; ?>" data-table-name="user_list"><i class="mdi mdi-account-settings-variant"></i></button>
                                                             <button type="button" class="btn btn-danger shadow btn-xs sharp p-0 delete" data-id="<?php echo $store['id']; ?>" title="Delete" data-table-name="user_list"><i class="mdi mdi-eraser"></i></button>
                                                         </div>
                                                     </td>
@@ -294,6 +301,34 @@ if (isset($_POST['save_store'])) {
                                 });
 
                                 $('.deleted-message').removeClass('hidden');
+                            }
+
+                        }
+                    });
+                }
+
+            });
+
+            // Forgot Password 
+            $('.forgot-password').click(function() {
+                var el = this;
+
+                var Id = $(this).data('id');
+                var emailAddress = $(this).data('email-address');
+
+                var confirmalert = confirm("Are you sure you want to forgot the password?");
+                if (confirmalert == true) {
+                    // AJAX Request
+                    $.ajax({
+                        url: 'forgot_password.php',
+                        type: 'POST',
+                        data: {
+                            id: Id,
+                            emailAddress: emailAddress
+                        },
+                        success: function(response) {
+                            if (response == 1) {
+                                $('.forgot-password-message').removeClass('hidden');
                             }
 
                         }

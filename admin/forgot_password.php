@@ -11,6 +11,7 @@ session_start();
 $temp_password = substr(md5(uniqid(rand(1,6))), 0, 8);;
 
 $user_id = $_POST['id'];
+$email_address = $_POST['emailAddress'];
 $sql = "select * from user_list where (id='$user_id');";
 $res = mysqli_query($link, $sql);
 
@@ -37,15 +38,14 @@ if ($totalrows > 0) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'systemspluscollegefoundation1@gmail.com';
-        $mail->Password = 'ieiiabmkltvdntsg'; //   ieiiabmkltvdntsgieiiabmkltvdntsgieiiabmkltvdntsg  bermzwhiteknight8       
+        $mail->Username = 'atadku.deliverysystem@gmail.com';
+        $mail->Password = 'gbxmqmuhhdupndri'; //   ieiiabmkltvdntsgieiiabmkltvdntsgieiiabmkltvdntsg  bermzwhiteknight8       
 
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
         //Send Email
-        $mail->setFrom('systemspluscollegefoundation1@gmail.com', 'ATAD KU');
-
+        $mail->setFrom('atadku.deliverysystem@gmail.com', 'ATADKU');
 
         $query1 = "SELECT * FROM user_list ORDER BY id DESC LIMIT 1";
         $result = mysqli_query($link, $query1);
@@ -53,11 +53,11 @@ if ($totalrows > 0) {
         if ($result->num_rows > 0) {
             foreach ($result as $row) {
 
-                $email_address = 'aquiambao061095@gmail.com';
+                $email_address = $email_address;
 
                 //Recipients
                 $mail->addAddress($email_address);
-                $mail->addReplyTo('systemspluscollegefoundation1@gmail.com');
+                $mail->addReplyTo('atadku.deliverysystem@gmail.com');
 
                 //Content
                 $mail->isHTML(true);
@@ -76,7 +76,7 @@ if ($totalrows > 0) {
                 $_SESSION['status'] = 'error';
 
                 $_SESSION['success_status'] = "You have successfully forgot the password.";
-                header("location: customers.php");
+                header("location: store.php");
             }
         }
     }

@@ -106,7 +106,7 @@ function ExportFile($records) {
                                                 <th>Order Code</th>
                                                 <th>Customer</th>
                                                 <th>Order Date</th>
-                                                <th>Product</th>
+                                                <th>Product </th>
                                                 <th>Charge</th>
                                                 <th>Total Amount</th>
                                                 <th>Driver</th>

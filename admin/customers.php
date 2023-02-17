@@ -172,7 +172,7 @@ if (isset($_POST['save_customer'])) {
                                                     <td>
                                                         <div class="d-flex">
                                                             <a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="mdi mdi-pencil"></i></a>
-                                                            <button type="button" class="btn btn-warning shadow btn-xs sharp forgot-password mr-1" title="Forgot Password" data-id="<?php echo $customer['id']; ?>" data-table-name="driver"><i class="mdi mdi-account-settings-variant"></i></button>
+                                                            <button type="button" class="btn btn-warning shadow btn-xs sharp forgot-password mr-1" title="Forgot Password" data-id="<?php echo $customer['id']; ?>" data-table-name="user_list"><i class="mdi mdi-account-settings-variant"></i></button>
                                                             <button type="button" class="btn btn-danger shadow btn-xs sharp delete mr-1" data-id="<?php echo $customer['id']; ?>" data-table-name="driver"><i class="mdi mdi-eraser"></i></button>
                                                         </div>
                                                     </td>
@@ -291,7 +291,7 @@ if (isset($_POST['save_customer'])) {
 
             });
 
-             // Delete 
+             // Forgot Password 
              $('.forgot-password').click(function() {
                 var el = this;
 
@@ -322,10 +322,6 @@ if (isset($_POST['save_customer'])) {
                 }
 
             });
-
-
-            
-
         });
     </script>
     <script type="text/javascript">
