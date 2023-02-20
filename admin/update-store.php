@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-floating mb-2">
-                            <input type="text" class="form-control" name="name" value="<?php echo $store['name']; ?>" id="restaurant" placeholder="Store Name" required>
+                            <input type="text" class="form-control" name="name" value="<?php echo $store['full_name']; ?>" id="restaurant" placeholder="Store Name" required>
                             <label for="restaurant">Store Name</label>
                         </div>
                     </div>

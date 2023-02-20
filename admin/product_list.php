@@ -130,46 +130,49 @@ if (isset($_POST['save_food'])) {
                                             <?php foreach ($product_list as $product) {
                                                 $image = $product['images'];
                                             ?>
-                                                <tr>
-                                                    <td>
-                                                        <?php
-                                                        $store_id = $product['store_id'];
-                                                        $result = mysqli_query($link, "SELECT *
-                                                                FROM user_list WHERE id = $store_id");
-                                                        $row = mysqli_fetch_array($result);
-                                                        ?>
-                                                        <?php echo $row['full_name']; ?>
-                                                    </td>
-                                                    <td><?php echo $product['product_name']; ?></td>
-                                                    <td><?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
-                                                    <td><img class="img-fluid" src=<?php echo "../uploads/$image" ?> alt=""></td>
-                                                    <td><?php echo $product['description']; ?></td>
-                                                    <td>
-                                                        <?php if ($product['status'] != 1) { ?>
-                                                            <span class="badge light badge-danger">
-                                                                <i class="fa fa-circle text-danger mr-1"></i>
-                                                                not available
-                                                            </span>
-                                                        <?php } else { ?>
-                                                            <span class="badge light badge-success">
-                                                                <i class="fa fa-circle text-success mr-1"></i>
-                                                                available
-                                                            </span>
-                                                        <?php } ?>
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex">
-                                                            <button class="btn btn-primary shadow btn-xs sharp mr-1 p-0" data-toggle="modal" type="button" data-target="#update_food_modal<?php echo $product['id'] ?>">
-                                                                <i class="mdi mdi-pencil"></i>
-                                                            </button>
-                                                            <button class="btn btn-danger shadow btn-xs sharp mr-1 p-0 delete" data-id="<?php echo $product['id']; ?>" data-table-name="product_list">
-                                                                <i class="mdi mdi-eraser"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                    <?php include 'update_food.php'; ?>
-                                                </tr>
-                                            <?php  } ?>
+                                                <?php
+                                                    $store_id = $product['store_id'];
+                                                    $result = mysqli_query($link, "SELECT *
+                                                            FROM user_list WHERE id = $store_id");
+                                                    $row = mysqli_fetch_array($result);
+                                                    ?>
+                                                <?php if ($row != "") { ?>
+                                                    <tr> 
+                                                        <td>
+                                                            <?php echo $row['full_name']; ?>
+                                                        </td>
+                                                        <td><?php echo $product['product_name']; ?></td>
+                                                        <td><?php echo number_format((float)$product['price'], 2, '.', ''); ?></td>
+                                                        <td><img class="img-fluid" src=<?php echo "../uploads/$image" ?> alt=""></td>
+                                                        <td><?php echo $product['description']; ?></td>
+                                                        <td>
+                                                            <?php if ($product['status'] != 1) { ?>
+                                                                <span class="badge light badge-danger">
+                                                                    <i class="fa fa-circle text-danger mr-1"></i>
+                                                                    not available
+                                                                </span>
+                                                            <?php } else { ?>
+                                                                <span class="badge light badge-success">
+                                                                    <i class="fa fa-circle text-success mr-1"></i>
+                                                                    available
+                                                                </span>
+                                                            <?php } ?>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <button class="btn btn-primary shadow btn-xs sharp mr-1 p-0" data-toggle="modal" type="button" data-target="#update_food_modal<?php echo $product['id'] ?>">
+                                                                    <i class="mdi mdi-pencil"></i>
+                                                                </button>
+                                                                <button class="btn btn-danger shadow btn-xs sharp mr-1 p-0 delete" data-id="<?php echo $product['id']; ?>" data-table-name="product_list">
+                                                                    <i class="mdi mdi-eraser"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                        <?php include 'update_food.php'; ?>
+                                                    </tr>
+                                                <?php  
+                                                }
+                                            } ?>
                                         </tbody>
                                     </table>
                                 </div>
