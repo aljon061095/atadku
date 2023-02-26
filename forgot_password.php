@@ -42,6 +42,13 @@ if (isset($_POST['forgot_password'])) {
             $mail->Password = 'gbxmqmuhhdupndri'; //   ieiiabmkltvdntsgieiiabmkltvdntsgieiiabmkltvdntsg  bermzwhiteknight8       
 
             $mail->SMTPSecure = 'ssl';
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
             $mail->Port = 465;
 
             //Send Email
@@ -68,16 +75,12 @@ if (isset($_POST['forgot_password'])) {
                         "</b></h3><br> Someone requested a new password for your account.<br/> Below is the new password generated." . "<br><h4><b>" . $temp_password .
                         "</b><h4>";
 
-                    if ($mail->send()); {
-
-                        $_SESSION['result'] = 'Message has been sent';
-                        $_SESSION['status'] = 'ok';
+                    if ($mail->send()) {
+                        $_SESSION['success_status'] = "You have successfully forgot the password.";
+                    } else {
+                        $_SESSION['result'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+                        $_SESSION['status'] = 'error';
                     }
-                    $_SESSION['result'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-                    $_SESSION['status'] = 'error';
-
-                    $_SESSION['success_status'] = "You have successfully forgot the password.";
-                    header("location: forgot_password.php");
                 }
             }
         }

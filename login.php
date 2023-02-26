@@ -47,7 +47,7 @@ if (isset($_POST['login'])) {
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT id, profile, username, password, user_type FROM user_list WHERE username = ?";
+        $sql = "SELECT id, profile, username, password, user_type, is_blocked FROM user_list WHERE username = ?";
 
         if ($stmt = $link->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
@@ -67,35 +67,39 @@ if (isset($_POST['login'])) {
                     // session_start();
 
                     // Bind result variables
-                    $stmt->bind_result($id, $profile, $username, $hashed_password, $user_type);
+                    $stmt->bind_result($id, $profile, $username, $hashed_password, $user_type, $is_blocked);
                     if ($stmt->fetch()) {
-                        if (password_verify($password, $hashed_password)) {
-                            // Password is correct, so start a new session
-                            session_start();
-
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;
-                            $_SESSION["profile"] = $profile;
-                            $_SESSION["user"] = $user_type;
-
-                            if ($user_type === "customer") {
-                                // Redirect user to welcome page
-                                header("location: user/stores.php");
-                            } else if ($user_type === "driver") {
-                                // Redirect user to welcome page
-                                header("location: user/dashboard.php");
-                            } else if ($user_type === "owner") {
-                                // Redirect user to welcome page
-                                header("location: user/dashboard.php");
-                            }  else {
-                                // Redirect user to welcome page
-                                header("location: user/index.php");
-                            }
+                        if ($is_blocked == 1) {
+                            $_SESSION['login_err'] = "Your account is blocked! Please contact your administrator.";
                         } else {
-                            // Password is not valid, display a generic error message
-                            $_SESSION['login_err'] = "Invalid username or password.";
+                            if (password_verify($password, $hashed_password)) {
+                                // Password is correct, so start a new session
+                                session_start();
+    
+                                // Store data in session variables
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["id"] = $id;
+                                $_SESSION["username"] = $username;
+                                $_SESSION["profile"] = $profile;
+                                $_SESSION["user"] = $user_type;
+    
+                                if ($user_type === "customer") {
+                                    // Redirect user to welcome page
+                                    header("location: user/stores.php");
+                                } else if ($user_type === "driver") {
+                                    // Redirect user to welcome page
+                                    header("location: user/dashboard.php");
+                                } else if ($user_type === "owner") {
+                                    // Redirect user to welcome page
+                                    header("location: user/dashboard.php");
+                                }  else {
+                                    // Redirect user to welcome page
+                                    header("location: user/index.php");
+                                }
+                            } else {
+                                // Password is not valid, display a generic error message
+                                $_SESSION['login_err'] = "Invalid username or password.";
+                            }
                         }
                     }
                 } else {
