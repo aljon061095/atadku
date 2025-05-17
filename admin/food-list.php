@@ -5,6 +5,39 @@ $food_list_sql = "SELECT * FROM food_list";
 $result = mysqli_query($link, $food_list_sql);
 $food_list = $result->fetch_all(MYSQLI_ASSOC);
 
+if (isset($_POST["ExportType"])) {
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM food_list where date_added between '" . $from_date . "' 
+            and '" . $to_date . "' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $food_list = $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    $filename = "Food_List" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($food_list);
+    exit();
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
+
 //adding food
 if (isset($_POST['save_food'])) {
     $restaurant = $_POST['restaurant'];
@@ -62,8 +95,16 @@ if (isset($_POST['save_food'])) {
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-food"></i> List of Foods</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#addFoodModal" class="btn fs-22 py-1 btn-success">Add Food</a>
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <a href="javascript:void(0);" data-toggle="modal" data-target="#addFoodModal" class="btn fs-22 py-1 btn-success">Add Food</a>
                     </div>
                 </div>
                 <!-- row -->
@@ -87,8 +128,8 @@ if (isset($_POST['save_food'])) {
                                         </thead>
                                         <tbody>
                                             <?php foreach ($food_list as $food) {
-                                                    $image = $food['images'];
-                                                ?>
+                                                $image = $food['images'];
+                                            ?>
                                                 <tr>
                                                     <td>
                                                         <?php
@@ -114,7 +155,7 @@ if (isset($_POST['save_food'])) {
                                                                 <i class="fa fa-circle text-success mr-1"></i>
                                                                 available
                                                             </span>
-                                                        <?php } ?> 
+                                                        <?php } ?>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
@@ -192,6 +233,7 @@ if (isset($_POST['save_food'])) {
         </div>
     </div>
 
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/footer.php' ?>
     <script>
         $(document).ready(function() {
@@ -221,7 +263,7 @@ if (isset($_POST['save_food'])) {
                                 });
 
                                 $('.deleted-message').removeClass('hidden');
-                            } 
+                            }
 
                         }
                     });
@@ -231,6 +273,23 @@ if (isset($_POST['save_food'])) {
 
         });
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

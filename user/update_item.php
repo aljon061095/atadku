@@ -12,19 +12,19 @@
                         <div class="form-group">
                             <div class="form-floating mb-2">
                                 <input type="hidden" class="form-control" name="id" value="<?php echo $item['id']; ?>">
-                                <input type="text" class="form-control" name="item" value="<?php echo $item['item']; ?>" id="food_name" placeholder="Food Name">
+                                <input type="text" class="form-control" name="item" value="<?php echo $item['item']; ?>" id="food_name" placeholder="Food Name" required>
                                 <label for="item">Item Name</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <input type="number" class="form-control" name="price" value="<?php echo $item['price']; ?>" id="price" placeholder="Price">
+                                <input type="number" class="form-control" name="price" value="<?php echo $item['price']; ?>" id="price" placeholder="Price" required>
                                 <label for="price">Price</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <textarea class="form-control" rows="4" placeholder="Description" name="description" id="description"><?php echo $item['description']; ?></textarea>
+                                <textarea class="form-control" rows="4" placeholder="Description" name="description" id="description" required><?php echo $item['description']; ?></textarea>
                                 <label for="description">Description</label>
                             </div>
                         </div>

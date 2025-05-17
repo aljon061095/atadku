@@ -16,7 +16,7 @@
 
         if ($totalrows > 0) {
             // Delete item record
-            $query = "DELETE FROM $tableName WHERE id=" . $id;
+            $query = "UPDATE $tableName SET is_deleted = 1 WHERE id=" . $id;
             mysqli_query($link, $query);
             echo 1;
             exit;

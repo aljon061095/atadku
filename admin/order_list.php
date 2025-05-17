@@ -4,6 +4,39 @@ require_once "includes/config.php";
 $order_sql = "SELECT * FROM orders";
 $result = mysqli_query($link, $order_sql);
 $order_list = $result->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST["ExportType"])) {
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM orders where date_created between '" . $from_date . "' 
+            and '" . $to_date . "' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $order_list = $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    $filename = "Order_List" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($order_list);
+    exit();
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +63,14 @@ $order_list = $result->fetch_all(MYSQLI_ASSOC);
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-navigation"></i> Order List</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,61 +95,64 @@ $order_list = $result->fetch_all(MYSQLI_ASSOC);
                                         </thead>
                                         <tbody>
                                             <?php foreach ($order_list as $order) { ?>
-                                                <tr>
-                                                    <td>
-                                                        <a href="order_info.php?order_id=<?php echo $order['id']; ?>">
-                                                            <?php echo $order['order_id']; ?>
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <?php
-                                                        $customer_id = $order['customer_id'];;
-                                                        $result = mysqli_query($link, "SELECT *
-                                                                FROM customer WHERE id = $customer_id");
-                                                        $row = mysqli_fetch_array($result);
-                                                        ?>
-                                                        <?php echo $row['full_name']; ?>
-                                                    </td>
-                                                    <td><?php echo $order['name']; ?></td>
-                                                    <td>49.00</td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
-                                                    <td><?php echo number_format($order['total'] + 49, 2); ?></td>
-                                                    <td>
-                                                        <?php
+                                                <?php
+                                                    $customer_id = $order['customer_id'];;
+                                                    $result = mysqli_query($link, "SELECT *
+                                                                    FROM customer WHERE id = $customer_id");
+                                                    $row = mysqli_fetch_array($result);
+                                                ?>
+                                                <?php if ($row != "") { ?>
+                                                    <tr>
+                                                        <td>
+                                                            <a href="order_info.php?order_id=<?php echo $order['id']; ?>">
+                                                                <?php echo $order['order_id']; ?>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['full_name']; ?>
+                                                        </td>
+                                                        <td><?php echo $order['name']; ?></td>
+                                                        <td>49.00</td>
+                                                        <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
+                                                        <td><?php echo number_format($order['total'] > 0 ? $order['total'] : 0  + 49, 2); ?></td>
+                                                        <td>
+                                                            <?php
                                                             $driver_id = $order['driver_id'];
                                                             $result = mysqli_query($link, "SELECT *
                                                                     FROM driver WHERE id = $driver_id");
                                                             $driver = mysqli_fetch_array($result);
-                                                        ?>
-                                                        <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet." ; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($order['status'] == 2) { ?>
-                                                            <span class="badge light badge-info">
-                                                                <i class="fa fa-circle text-info mr-1"></i>
-                                                                ready for delivery
-                                                            </span>
-                                                        <?php } else if ($order['status'] == 3) { ?>
-                                                            <span class="badge light badge-success">
-                                                                <i class="fa fa-circle text-success mr-1"></i>
-                                                                delivered
-                                                            </span>
-                                                        <?php } else { ?>
-                                                            <span class="badge light badge-warning">
-                                                                <i class="fa fa-circle text-warning mr-1"></i>
-                                                                pending
-                                                            </span>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
+                                                            ?>
+                                                            <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet."; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if ($order['status'] == 2) { ?>
+                                                                <span class="badge light badge-info">
+                                                                    <i class="fa fa-circle text-info mr-1"></i>
+                                                                    ready for delivery
+                                                                </span>
+                                                            <?php } else if ($order['status'] == 3) { ?>
+                                                                <span class="badge light badge-success">
+                                                                    <i class="fa fa-circle text-success mr-1"></i>
+                                                                    delivered
+                                                                </span>
+                                                            <?php } else { ?>
+                                                                <span class="badge light badge-warning">
+                                                                    <i class="fa fa-circle text-warning mr-1"></i>
+                                                                    pending
+                                                                </span>
+                                                            <?php } ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                            } ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-				</div>
+                </div>
             </div>
         </div>
 
@@ -165,7 +209,24 @@ $order_list = $result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/footer.php' ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

@@ -25,6 +25,28 @@ if (isset($_POST['delivered'])) {
     }
 }
 
+if (isset($_POST['accepted'])) {
+    $id = $_POST['pickup_id'];
+    $driver_id = $_SESSION['id'];
+    $status = 2;
+
+    $query = "UPDATE `pickup` SET `status` = '$status', `driver_id` = '$driver_id' WHERE id = $id";
+    $query_run = mysqli_query($link, $query);
+
+    if ($query_run) {
+        //update the pickup status -- delivered by the rider
+        $pickup_id = $link->insert_id;
+        $description = "The item for pickup is now accepted by the driver. Thank you for choosing our delivery system!";
+
+        $query_status = "INSERT INTO pickup_status(pickup_id, description)
+                    VALUES ('$pickup_id', '$description')";
+        $query_status_run = mysqli_query($link, $query_status);
+
+        $_SESSION['success_status'] = "You have successfully updated the status of the pickup";
+        header("location: pickup_list.php");
+    }
+}
+
 $pickup_id = $_GET['pickup_id'];
 $pickup_sql = "SELECT * FROM pickup WHERE id = $pickup_id";
 $result = mysqli_query($link, $pickup_sql);
@@ -62,6 +84,9 @@ $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
                             <div>
                                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                                     <input type="hidden" name="pickup_id" value="<?php echo $pickup_id; ?>" />
+                                    <?php if ($pickup['status'] == 1) { ?>
+                                        <button type="submit" name="accepted" class="btn btn-primary">Accepted</button>
+                                    <?php  } ?>
                                     <button type="submit" name="delivered" class="btn btn-success">Delivered</button>
                                     <button type="submit" name="reject" class="btn btn-danger">Reject</button>
                                 </form>

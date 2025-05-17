@@ -5,6 +5,40 @@ $item_list_sql = "SELECT * FROM item_list";
 $result = mysqli_query($link, $item_list_sql);
 $item_list = $result->fetch_all(MYSQLI_ASSOC);
 
+if (isset($_POST["ExportType"])) {
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM item_list where date_added between '".$from_date."' 
+            and '".$to_date."' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $item_list = $result->fetch_all(MYSQLI_ASSOC);
+    } 
+    
+    $filename = "Item_List" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($item_list);
+    exit();
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
+
+
 //adding food
 if (isset($_POST['save_item'])) {
     $store = $_POST['store'];
@@ -62,13 +96,19 @@ if (isset($_POST['save_item'])) {
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-gift"></i> List of Items</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#addStoreModal" class="btn fs-22 py-1 btn-success">Add Item</a>
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </a>
+                                </div>
+                          </div>
                         </div>
-                        <a href="javascript:void(0);" data-toggle="modal" data-target="#addStoreModal" class="btn fs-22 py-1 btn-success">Add Item</a>
                     </div>
                 </div>
                 <!-- row -->
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -88,8 +128,8 @@ if (isset($_POST['save_item'])) {
                                         </thead>
                                         <tbody>
                                             <?php foreach ($item_list as $item) {
-                                                    $image = $item['images'];
-                                                ?>
+                                                $image = $item['images'];
+                                            ?>
                                                 <tr>
                                                     <td>
                                                         <?php
@@ -115,7 +155,7 @@ if (isset($_POST['save_item'])) {
                                                                 <i class="fa fa-circle text-success mr-1"></i>
                                                                 available
                                                             </span>
-                                                        <?php } ?> 
+                                                        <?php } ?>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
@@ -128,7 +168,7 @@ if (isset($_POST['save_item'])) {
                                                         </div>
                                                     </td>
                                                     <?php include 'update_item.php'; ?>
-                                                    </tr>
+                                                </tr>
                                             <?php  } ?>
                                         </tbody>
                                     </table>
@@ -156,31 +196,31 @@ if (isset($_POST['save_item'])) {
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <input type="text" class="form-control" name="store" id="store" placeholder="Store Name">
+                                <input type="text" class="form-control" name="store" id="store" placeholder="Store Name" required>
                                 <label for="store">Store</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name">
+                                <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name" required>
                                 <label for="item_name">Item Name</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <input type="number" class="form-control" name="price" id="price" placeholder="Price">
+                                <input type="number" class="form-control" name="price" id="price" placeholder="Price" required>
                                 <label for="price">Price</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <input type="file" class="form-control" name="image" id="image" placeholder="Imgae">
+                                <input type="file" class="form-control" name="image" id="image" placeholder="Image" required>
                                 <label for="image">Image</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-floating mb-2">
-                                <textarea class="form-control" placeholder="Description" name="description" id="description"></textarea>
+                                <textarea class="form-control" placeholder="Description" name="description" id="description" required></textarea>
                                 <label for="description">Description</label>
                             </div>
                         </div>
@@ -192,6 +232,8 @@ if (isset($_POST['save_item'])) {
             </div>
         </div>
     </div>
+
+    <?php include 'export_modal.php' ?>
 
     <?php include 'includes/footer.php' ?>
     <script>
@@ -222,7 +264,7 @@ if (isset($_POST['save_item'])) {
                                 });
 
                                 $('.deleted-message').removeClass('hidden');
-                            } 
+                            }
 
                         }
                     });
@@ -230,6 +272,22 @@ if (isset($_POST['save_item'])) {
 
             });
 
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
         });
     </script>
 

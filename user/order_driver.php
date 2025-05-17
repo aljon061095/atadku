@@ -1,14 +1,47 @@
 <?php
-    //Include config file
-    require_once "includes/config.php";
+//Include config file
+require_once "includes/config.php";
 
-    //Initialize the session
-    session_start();
+//Initialize the session
+session_start();
 
-    $driver_id = $_SESSION["id"];
-    $orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id";
-    $result = mysqli_query($link, $orders_sql);
-    $orders = $result->fetch_all(MYSQLI_ASSOC);
+$driver_id = $_SESSION["id"];
+$orders_sql = "SELECT * FROM orders WHERE driver_id = $driver_id";
+$result = mysqli_query($link, $orders_sql);
+$orders = $result->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST["ExportType"])) {
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM orders where driver_id = '$driver_id' && date_added between '" . $from_date . "' 
+        and '" . $to_date . "' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $orders = $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    $filename = "Driver Orders" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($sales);
+    exit();
+}
+
+function ExportFile($records)
+{
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,22 +49,31 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
 
-<?php include 'includes/header.php'?>
-    <!-- Datatable -->
+<?php include 'includes/header.php' ?>
+<!-- Datatable -->
+
 <body>
 
-    <?php include 'includes/preloader.php'?>
+    <?php include 'includes/preloader.php' ?>
     <div id="main-wrapper">
 
-        <?php include 'includes/topbar.php'?>
-        <?php include 'includes/sidebar.php'?>
+        <?php include 'includes/topbar.php' ?>
+        <?php include 'includes/sidebar.php' ?>
 
         <div class="content-body">
-        <div class="container-fluid" style="margin-left: -5px; padding-top: 3rem !important;">
+            <div class="container-fluid" style="margin-left: -5px; padding-top: 3rem !important;">
                 <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4><i class="mdi mdi-cart-plus"></i> Delivery List</h4>
+                            <div class="col-md-12 float-right mb-4">
+                                <div class="btn-group pull-right">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
+                                        <i class="mdi mdi-download"></i>
+                                        Export
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,7 +113,7 @@
                                                         ?>
                                                         <?php echo $row['full_name']; ?>
                                                     </td>
-                                                    <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
+                                                    <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
                                                     <td><?php echo number_format($order['price'] + 49, 2); ?></td>
@@ -101,14 +143,30 @@
                             </div>
                         </div>
                     </div>
-				</div>
-                
+                </div>
+
             </div>
         </div>
     </div>
 
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/feedbacks.php' ?>
-    <?php include 'includes/footer.php'?>
+    <?php include 'includes/footer.php' ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery('button').on("click", function() {
+                var target = $(this).attr('id');
+                switch (target) {
+                    case 'export-to-excel':
+                        $('#hidden-type').val(target);
+                        //alert($('#hidden-type').val());
+                        $('#export-form').submit();
+                        $('#hidden-type').val('');
+                        break;
+                }
+            });
+        });
+    </script>
 
 </body>
 

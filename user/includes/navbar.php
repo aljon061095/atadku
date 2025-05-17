@@ -11,7 +11,7 @@
 ?>
 
 <div class="nav-header">
-    <a href="index.php" class="brand-logo">
+    <a href="stores.php" class="brand-logo">
         <img src="../images/avatar/logo_main.png" alt="" width="100">
     </a>
 </div>
@@ -57,33 +57,7 @@
                             <a class="dropdown-item text-center small text-gray-500" href="cart.php">View My Cart</a>
                         </div>
                     </li>
-
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
-                            <span class="badge badge-danger badge-counter">
-                                3
-                            <span>
-                        </a>
-                        <!-- Dropdown - Alerts -->
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <h6 class="dropdown-header">
-                                Messages
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="notifications.php">
-                                <div class="mr-3">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">11/12/13</div>
-                                    <span class="font-weight-bold">Test Messages</span>
-                                </div>
-                            </a>
-                        
-                            <a class="dropdown-item text-center small text-gray-500" href="home.php">Read More Messages</a>
-                        </div>
-                    </li>
-
+                    
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle"  href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>

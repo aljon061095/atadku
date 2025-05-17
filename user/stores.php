@@ -1,9 +1,9 @@
 <?php 
     require_once "includes/config.php";
 
-    $restaurant_sql = "SELECT * FROM restaurant";
-    $result = mysqli_query($link, $restaurant_sql);
-    $restaurants = $result->fetch_all(MYSQLI_ASSOC);
+    $stores_sql = "SELECT * FROM user_list WHERE user_type = 'owner' ORDER BY full_name ASC";
+    $result = mysqli_query($link, $stores_sql);
+    $stores = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -12,15 +12,18 @@
 <?php include 'includes/header.php'?>
 
 <body>
-   <?php include 'includes/preloader.php' ?>
+    <?php include 'includes/preloader.php' ?>
+
     <div id="main-wrapper">
+        
        <?php include 'includes/navbar.php' ?>
-        <div class="content-body" style="margin-left: -5px;">
+       <?php include 'includes/sidebar.php'?>
+        <div class="content-body" style="padding-top: 7rem;">
             <div class="container-fluid">
                 <div class="row">
-                <?php
-                        foreach ($restaurants as $restaurant) {
-                                $logo = $restaurant['logo'];
+                    <?php
+                        foreach ($stores as $store) {
+                                $logo = $store['profile'];
                             ?>
                         
                             <div class="col-xl-3 col-lg-6 col-md-4 col-sm-6">
@@ -28,25 +31,18 @@
                                     <div class="card-body">
                                         <div class="new-arrival-product">
                                             <div class="new-arrivals-img-contnent">
-                                                <img class="img-fluid" src=<?php echo "uploads/$logo" ?> alt="">
+                                                <img class="img-fluid" src=<?php echo "../uploads/$logo" ?> alt="">
                                             </div>
                                             <div class="new-arrival-content text-center mt-1">
-                                                <ul class="star-rating">
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                </ul>
-                                                <h4><?php echo $restaurant['name']; ?></h4>
-                                                <p><?php echo $restaurant['address']; ?></p>
+                                                <h4><?php echo $store['full_name']; ?></h4>
+                                                <p><?php echo $store['address']; ?></p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
                                         <div class="text-center">
                                             <span class="price">
-                                                <a href="menu.php?id=<?php echo $restaurant['id']; ?>" class="btn btn-primary">View Menu</a>
+                                                <a href="product.php?id=<?php echo $store['id']; ?>" class="btn btn-primary">View</a>
                                             </span>
                                         </div>
                                     </div>
@@ -58,8 +54,7 @@
         </div>
     </div>
 
+    <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
-
-    <?php include 'includes/scripts.php' ?>
 </body>
 </html>

@@ -10,11 +10,11 @@ $feedback_sql = "SELECT * FROM feedback";
 $feedback_result = mysqli_query($link, $feedback_sql);
 $feedbacks = $feedback_result->fetch_all(MYSQLI_ASSOC);
 
-$driver_sql = "SELECT * FROM driver";
+$driver_sql = "SELECT * FROM user_list WHERE user_type = 'driver'";
 $driver_result = mysqli_query($link, $driver_sql);
 $drivers = $driver_result->fetch_all(MYSQLI_ASSOC);
 
-$customer_sql = "SELECT * FROM customer";
+$customer_sql = "SELECT * FROM user_list WHERE user_type = 'customer'";
 $customer_result = mysqli_query($link, $customer_sql);
 $customers = $customer_result->fetch_all(MYSQLI_ASSOC);
 

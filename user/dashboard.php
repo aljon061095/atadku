@@ -12,6 +12,10 @@ $food_sql = "SELECT * FROM food_list WHERE status = 1 and restaurant_id = $resta
 $food_result = mysqli_query($link, $food_sql);
 $food_list = $food_result->fetch_all(MYSQLI_ASSOC);
 
+$product_sql = "SELECT * FROM product_list WHERE status = 1 and store_id = $store_id";
+$product_result = mysqli_query($link, $product_sql);
+$product_list = $product_result->fetch_all(MYSQLI_ASSOC);
+
 $item_sql = "SELECT * FROM item_list WHERE status = 1 and store_id = $store_id";
 $item_result = mysqli_query($link, $item_sql);
 $item_list = $item_result->fetch_all(MYSQLI_ASSOC);
@@ -74,41 +78,22 @@ $sales = $row['sales_sum'];
 
 				<!--Restaurant Owner-->
 				<?php if (isset($_SESSION["user"]) && $_SESSION["user"] === "owner") { ?>
-					<?php if (isset($_SESSION["type"]) && $_SESSION["type"] === "restaurant") { ?>
 						<div class="row">
 							<div class="col-xl-4 col-xxl-4 col-lg-6 col-md-6 col-sm-6">
 								<div class="widget-stat card">
 									<div class="card-body p-4">
 										<div class="media ai-icon">
 											<span class="mr-3 bgl-primary text-primary">
-												<i class="mdi mdi-food"></i>
+												<i class="mdi mdi-gift"></i>
 											</span>
 											<div class="media-body">
-												<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($food_list); ?></span></h3>
-												<p class="mb-0">Foods Available</p>
+												<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($product_list); ?></span></h3>
+												<p class="mb-0">Product Available</p>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						<?php } else { ?>
-							<div class="row">
-								<div class="col-xl-4 col-xxl-4 col-lg-6 col-md-6 col-sm-6">
-									<div class="widget-stat card">
-										<div class="card-body p-4">
-											<div class="media ai-icon">
-												<span class="mr-3 bgl-primary text-primary">
-													<i class="mdi mdi-gift"></i>
-												</span>
-												<div class="media-body">
-													<h3 class="mb-0 text-black"><span class="counter ml-0"><?php echo count($item_list); ?></span></h3>
-													<p class="mb-0">Item Available</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							<?php  } ?>
 							<div class="col-xl-4 col-xxl-4 col-lg-6 col-md-6 col-sm-6">
 								<div class="widget-stat card">
 									<div class="card-body p-4">

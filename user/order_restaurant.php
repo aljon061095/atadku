@@ -9,6 +9,38 @@ $restaurant_id = $_SESSION["id"];
 $orders_sql = "SELECT * FROM orders WHERE restaurant_id = $restaurant_id";
 $result = mysqli_query($link, $orders_sql);
 $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST["ExportType"])) {
+    if (isset($_POST['from_date']) && isset($_POST['to_date'])) {
+        $from_date = $_POST['from_date'];
+        $to_date = $_POST['to_date'];
+
+        $query = "SELECT * FROM orders where restaurant_id = $restaurant_id && date_added between '" . $from_date . "' 
+        and '" . $to_date . "' ORDER BY id asc";
+        $result = mysqli_query($link, $query);
+        $orders = $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    $filename = "Product" . ".xls";
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    ExportFile($orders);
+    exit();
+}
+
+function ExportFile($records) {
+    $heading = false;
+    if (!empty($records))
+        foreach ($records as $row) {
+            if (!$heading) {
+                // display field/column names as a first row
+                echo implode("\t", array_keys($row)) . "\n";
+                $heading = true;
+            }
+            echo implode("\t", array_values($row)) . "\n";
+        }
+    exit;
+}
 ?>
 
 
@@ -39,9 +71,16 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                         </div>
                     </div>
                 </div>
-                <!-- <pre>
-                    <?php print_r($orders); ?>
-                </pre> -->
+                <div class="row">
+                    <div class="col-md-12 float-right mb-4">
+                        <div class="btn-group pull-right">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#exportModal" class="btn fs-22 py-1 ml-2 btn-primary">
+                                <i class="mdi mdi-download"></i>
+                                Export
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <?php
                     if (isset($_SESSION['success_status'])) {
@@ -66,7 +105,7 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                                             <tr>
                                                 <th>Order Code</th>
                                                 <th>Customer</th>
-                                                <th>Date</th>
+                                                <th>Order Date</th>
                                                 <th>Food</th>
                                                 <th>Charge</th>
                                                 <th>Total Amount</th>
@@ -84,25 +123,25 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
                                                     </td>
                                                     <td>
                                                         <?php
-                                                            $customer_id = $order['customer_id'];
-                                                            $result = mysqli_query($link, "SELECT *
+                                                        $customer_id = $order['customer_id'];
+                                                        $result = mysqli_query($link, "SELECT *
                                                                     FROM customer WHERE id = $customer_id");
-                                                            $row = mysqli_fetch_array($result);
-                                                            ?>
+                                                        $row = mysqli_fetch_array($result);
+                                                        ?>
                                                         <?php echo $row['full_name']; ?>
                                                     </td>
                                                     <td><?php echo date('m-d-Y', strtotime($order['order_date'])); ?></td>
                                                     <td><?php echo $order['name']; ?></td>
                                                     <td>49.00</td>
-                                                    <td><?php echo number_format($order['total'] + 49, 2); ?></td>
+                                                    <td><?php echo number_format($order['total'] > 0 ? $order['total'] : 0  + 49, 2); ?></td>
                                                     <td>
                                                         <?php
-                                                            $driver_id = $order['driver_id'];
-                                                            $result = mysqli_query($link, "SELECT *
+                                                        $driver_id = $order['driver_id'];
+                                                        $result = mysqli_query($link, "SELECT *
                                                                     FROM driver WHERE id = $driver_id");
-                                                            $driver = mysqli_fetch_array($result);
+                                                        $driver = mysqli_fetch_array($result);
                                                         ?>
-                                                        <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet." ; ?>
+                                                        <?php echo $driver != null ? $driver['full_name']  : "No assigned driver yet."; ?>
                                                     </td>
                                                     <td>
                                                         <?php if ($order['status'] == 2) { ?>
@@ -134,9 +173,27 @@ $orders = $result->fetch_all(MYSQLI_ASSOC);
             </div>
         </div>
     </div>
+
+    <?php include 'export_modal.php' ?>
     <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
 
 </body>
 
 </html>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        jQuery('button').on("click", function() {
+            var target = $(this).attr('id');
+            switch (target) {
+                case 'export-to-excel':
+                    $('#hidden-type').val(target);
+                    //alert($('#hidden-type').val());
+                    $('#export-form').submit();
+                    $('#hidden-type').val('');
+                    break;
+            }
+        });
+    });
+</script>

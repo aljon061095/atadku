@@ -111,111 +111,152 @@ if (isset($_POST['accept_pickup'])) {
 
                 <div class="row">
                     <?php
-                        if (isset($_SESSION['success_status'])) {
-                        ?>
-                            <div class="alert alert-success alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                <?php echo $_SESSION['success_status']; ?>
-                            </div>
-                        <?php
-                            unset($_SESSION['success_status']);
-                        }
+                    if (isset($_SESSION['success_status'])) {
+                    ?>
+                        <div class="alert alert-success alert-dismissable">
+                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            <?php echo $_SESSION['success_status']; ?>
+                        </div>
+                    <?php
+                        unset($_SESSION['success_status']);
+                    }
                     ?>
                 </div>
 
                 <div class="row">
-                    <?php foreach ($order_list as $order) { ?>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                    <div class="card-body">
-                                        <input type="hidden" id="id" name="id" value="<?php echo $order['id']; ?>" />
-                                        <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $order['customer_id']; ?>" />
-                                        <h5 class="card-title">
-                                            <a href="#" class="card-link" data-toggle="modal" data-target="#order_pickup_info_modal<?php echo $order['id'] ?>">
-                                                <?php echo $order['order_id']; ?>
-                                            </a>
-                                        </h5>
-                                        <div class="badge badge-success">Pickup from:</div><br />
-                                        <?php
-                                        if ($order['store_id'] > 0) {
-                                            $store_id = $order['store_id'];;
-                                            $result = mysqli_query($link, "SELECT * 
-                                                    FROM store WHERE id = $store_id");
-                                            $store = mysqli_fetch_array($result);
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Order List</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Pickup List</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="table-responsive mt-4">
+                                            <table id="example" class="display" style="min-width: 845px">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order Code</th>
+                                                        <th>Pickup from</th>
+                                                        <th>Date</th>
+                                                        <th>Delivered to</th>
+                                                        <th>Delivery Charge</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($order_list as $order) { ?>
+                                                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                                            <input type="hidden" id="id" name="id" value="<?php echo $order['id']; ?>" />
+                                                            <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $order['customer_id']; ?>" />
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#" class="card-link" data-toggle="modal" data-target="#order_pickup_info_modal<?php echo $order['id'] ?>">
+                                                                        <?php echo $order['order_id']; ?>
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <?php
+                                                                    if ($order['store_id'] > 0) {
+                                                                        $store_id = $order['store_id'];;
+                                                                        $result = mysqli_query($link, "SELECT * 
+                                                                        FROM store WHERE id = $store_id");
+                                                                        $store = mysqli_fetch_array($result);
 
-                                            echo '<span>' . $store['name'] . '</span><br/>';
-                                            echo '<span>' . $store['address'] . '</span>';
-                                        }
+                                                                        echo '<span><strong>' . $store['name'] . '</strong></span><br/><br/>';
+                                                                        echo '<span>' . $store['address'] . '</span>';
+                                                                    }
 
-                                        if ($order['restaurant_id'] > 0) {
-                                            $restaurant_id = $order['restaurant_id'];;
-                                            $result = mysqli_query($link, "SELECT *
-                                                    FROM restaurant WHERE id = $restaurant_id");
-                                            $restaurant = mysqli_fetch_array($result);
+                                                                    if ($order['restaurant_id'] > 0) {
+                                                                        $restaurant_id = $order['restaurant_id'];;
+                                                                        $result = mysqli_query($link, "SELECT *
+                                                                        FROM restaurant WHERE id = $restaurant_id");
+                                                                        $restaurant = mysqli_fetch_array($result);
 
-                                            echo '<span>' . $restaurant['name'] . '</span><br/>';
-                                            echo '<span>' . $restaurant['address'] . '</span>';
-                                        }
-
-                                        $customer_id = $order['customer_id'];
-                                        $result = mysqli_query($link, "SELECT *
-                                                FROM customer WHERE id = $customer_id");
-                                        $customer = mysqli_fetch_array($result);
-                                        ?>
-
-                                        <div class="mt-4">
-                                            <div class="badge badge-success">Delivered to:</div><br />
-                                            <span class="card-text"><?php echo $customer['full_name']; ?></span><br />
-                                            <span class="card-text"><?php echo $customer['address']; ?></span><br />
-                                            <span class="card-text">Delivery Charge: <strong>₱ <?php echo number_format($order['charge'], 2); ?></strong></span>
+                                                                        echo '<span><strong>' . $restaurant['name'] . '</strong></span><br/><br/>';
+                                                                        echo '<span>' . $restaurant['address'] . '</span>';
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                    $customer_id = $order['customer_id'];
+                                                                    $result = mysqli_query($link, "SELECT *
+                                                                        FROM user_list WHERE id = $customer_id");
+                                                                    $customer = mysqli_fetch_array($result);
+                                                                    ?>
+                                                                    <span class="card-text"><?php echo $customer['full_name']; ?></span><br />
+                                                                    <span class="card-text"><?php echo $customer['address']; ?></span><br />
+                                                                </td>
+                                                                <td><?php echo date('m-d-Y H:i A', strtotime($order['order_date'])); ?></td>
+                                                                <td>
+                                                                    <button type="submit" name="accept_delivery" class="btn btn-primary float-right">Accept</button>
+                                                                </td>
+                                                            </tr>
+                                                        </form>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <button type="submit" name="accept_delivery" class="btn btn-primary float-right">Accept</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <?php include 'order_info_modal.php'; ?>
-                    <?php } ?>
-
-                    <?php foreach ($pickup_list as $pickup) { ?>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                    <div class="card-body">
-                                        <input type="hidden" id="id" name="id" value="<?php echo $pickup['id']; ?>" />
-                                        <input type="hidden" id="sender_name" name="sender_name" value="<?php echo $pickup['sender_name']; ?>" />
-                                        <h5 class="card-title">
-                                            <a href="#" class="card-link" data-toggle="modal" data-target="#pickup_info_modal<?php echo $pickup['id'] ?>">
-                                                <?php echo $pickup['pickup_code']; ?>
-                                            </a>
-                                        </h5>
-                                        <div class="badge badge-success">Pickup from:</div><br />
-                                        <span><?php echo $pickup['sender_name'] ?></span><br />
-                                        <span><?php echo $pickup['sender_address'] ?></span><br />
-
-                                        <div class="mt-4">
-                                            <div class="badge badge-success">Delivered to:</div><br />
-                                            <span class="card-text"><?php echo $pickup['recipient_name']; ?></span><br />
-                                            <span class="card-text"><?php echo $pickup['recipient_address']; ?></span><br />
-                                            <span class="card-text">Pickup Delivery Charge: <strong>₱ <?php echo number_format($order['charge'], 2); ?></strong></span>
+                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="table-responsive mt-4">
+                                            <table id="example3" class="display" style="min-width: 845px">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pickup Code</th>
+                                                        <th>Pickup from</th>
+                                                        <th>Date</th>
+                                                        <th>Delivered to</th>
+                                                        <th>Delivery Charge</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($pickup_list as $pickup) { ?>
+                                                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                                            <input type="hidden" id="id" name="id" value="<?php echo $pickup['id']; ?>" />
+                                                            <input type="hidden" id="sender_name" name="sender_name" value="<?php echo $pickup['sender_name']; ?>" />
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#" class="card-link" data-toggle="modal" data-target="#pickup_info_modal<?php echo $pickup['id'] ?>">
+                                                                        <?php echo $pickup['pickup_code']; ?>
+                                                                    </a> 
+                                                                </td>
+                                                                <td>
+                                                                    <span><?php echo $pickup['sender_name'] ?></span><br />
+                                                                    <span><?php echo $pickup['sender_address'] ?></span><br />
+                                                                </td>
+                                                                <td><?php echo date('m-d-Y H:i A', strtotime($pickup['date_added'])); ?></td>
+                                                                <td>           
+                                                                    <span class="card-text"><?php echo $pickup['recipient_name']; ?></span><br />
+                                                                    <span class="card-text"><?php echo $pickup['recipient_address']; ?></span><br />
+                                                                </td>
+                                                                <td><?php echo date('m-d-Y H:i A', strtotime($pickup['date_added'])); ?></td>
+                                                                <td>
+                                                                    <button type="submit" name="accept_pickup" class="btn btn-primary float-right">Accept</button>
+                                                                </td>
+                                                            </tr>
+                                                        </form>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <button type="submit" name="accept_pickup" class="btn btn-primary float-right">Accept</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                        <?php include 'pickup_info_modal.php'; ?>
-                    <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <?php include 'includes/feedbacks.php' ?>
     <?php include 'includes/footer.php' ?>
