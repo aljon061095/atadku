@@ -4,7 +4,7 @@
     define('DB_SERVER', 'localhost');
     define('DB_USERNAME', 'root');
     define('DB_PASSWORD', '');
-    define('DB_NAME', 'atadku');
+    define('DB_NAME', 'atadku_revised');
     
     /* Attempt to connect to MySQL database */
     $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
